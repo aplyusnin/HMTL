@@ -1,35 +1,21 @@
 package ru.nsu.fit.hmtl.inference;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-
 public class TypeUtils {
 
-	/** Function for creating full name of the constant type. */
-	public static String getFullName(ConstantType type) {
-		LinkedList<String> names = new LinkedList<>();
-		names.add(type.getName());
-		while (type.getParent().isPresent()) {
-			type = type.getParent().get();
-			names.add(type.getName());
+	/** Check if two types are equal. */
+	public static boolean areEqual(InferenceType t1, InferenceType t2) {
+		// if types are not the same tha
+		if (t1.isComplex() != t2.isComplex()) return false;
+		// if both are complex
+		if (t1.isComplex()) {
+			return areEqual(((ApplicationType) t1).getLeftSide(), ((ApplicationType) t2).getLeftSide()) &&
+					areEqual(((ApplicationType) t1).getRightSide(), ((ApplicationType) t2).getRightSide());
 		}
-		StringBuilder builder = new StringBuilder();
-		Iterator<String> iterator = names.descendingIterator();
-		builder.append(iterator.next());
-		while (iterator.hasNext())  {
-			builder.append(".").append(iterator.next());
+		// if there is at least one non-final type
+		if (!t1.isFinal() || !t2.isFinal()) {
+			return true;
 		}
-		return builder.toString();
-	}
-
-	/** Function for creating full name of the functional type. */
-	public static String getFullName(FunctionalType type) {
-		StringBuilder builder = new StringBuilder();
-		for (var t : type.getArgs()) {
-			builder.append(getFullName(t)).append("->");
-		}
-		builder.append(getFullName(type.getResult()));
-
-		return builder.toString();
+		// if both types are final they both should be the same
+		return t1.getId() == t2.getId();
 	}
 }
