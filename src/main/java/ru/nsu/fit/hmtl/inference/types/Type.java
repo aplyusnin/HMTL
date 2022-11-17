@@ -21,7 +21,7 @@ public class Type {
 	 * Type is complex if is an abstraction over non-empty type.
 	 */
 	public boolean isComplex() {
-		return leftHandSide.isSubstitutable();
+		return leftHandSide.isSubstitutable() || rightHandSide.canSubstitute();
 	}
 
 	public Type getLeftHandSide() {
@@ -54,6 +54,16 @@ public class Type {
 			return "(" + leftHandSide.getName() + "->" + rightHandSide.getName() + ")";
 		}
 		return "VarT";
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Type)) return false;
+
+		Type type = (Type) o;
+
+		return getName().equals(type.getName());
 	}
 
 	public interface TypeBuilder {

@@ -35,7 +35,11 @@ public class TypeUtils {
 	 * @return if t1 can be substituted with t2
 	 */
 	public static boolean substitutable(Type t1, Type t2) {
-		// if t1 cannot be substituted or t2 cannot substitute
+		// type can always be substituted by itself
+		if (t1.equals(t2)) {
+			return true;
+		}
+		// tif t1 cannot be substituted or t2 cannot substitute
 		if (!t1.isSubstitutable() || !t2.canSubstitute()) {
 			return false;
 		}
