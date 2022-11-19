@@ -1,4 +1,6 @@
-package ru.nsu.fit.hmtl.inference.types;
+package ru.nsu.fit.hmtl.inference.typesystem.types;
+
+import ru.nsu.fit.hmtl.inference.typesystem.unification.EmptyTypeUnificationStrategy;
 
 /**
  * An empty type which cannot substitute or be substituted.
@@ -8,7 +10,7 @@ public class EmptyType extends Type {
 	private static final EmptyType instance = new EmptyType();
 
 	private EmptyType() {
-		super(null, null);
+		super(0,null, null, new EmptyTypeUnificationStrategy());
 	}
 
 	public static EmptyType getInstance() {
@@ -17,11 +19,6 @@ public class EmptyType extends Type {
 
 	@Override
 	public boolean isComplex() {
-		return false;
-	}
-
-	@Override
-	public boolean isSubstitutable() {
 		return false;
 	}
 
