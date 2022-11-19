@@ -8,7 +8,7 @@ public class BasicContextLoader {
 
 
 	public BasicContextLoader() {
-		types = Arrays.asList("Integer", "Boolean", "String").iterator();
+		types = Arrays.asList(":Int", ":Bool", ":String").iterator();
 	}
 
 	String nextType() {

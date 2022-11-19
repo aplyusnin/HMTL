@@ -1,11 +1,21 @@
-package ru.nsu.fit.hmtl.inference.types;
+package ru.nsu.fit.hmtl.inference.typesystem.types;
+
+import ru.nsu.fit.hmtl.inference.typesystem.TypeInferenceException;
+import ru.nsu.fit.hmtl.inference.typesystem.unification.ConstantUnificationStrategy;
 
 import java.util.UUID;
 
-public class BasicTypeBuilder implements Type.TypeBuilder {
+public class BasicTypeBuilder implements TypeBuilder {
 
 	// Set some random name by default
 	private String name = UUID.randomUUID().toString();
+	private int id = -1;
+
+	@Override
+	public TypeBuilder setId(int id) {
+		this.id = id;
+		return this;
+	}
 
 	@Override
 	public BasicTypeBuilder setRightHandSide(Type rhs) {
@@ -38,7 +48,7 @@ public class BasicTypeBuilder implements Type.TypeBuilder {
 
 	@Override
 	public Type build() {
-		return new BasicType(name);
+		return new BasicType(name, id, new ConstantUnificationStrategy());
 	}
 
 }
