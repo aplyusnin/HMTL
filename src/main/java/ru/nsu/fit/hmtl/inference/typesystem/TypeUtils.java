@@ -28,8 +28,9 @@ public class TypeUtils {
 	public static int application(Type init, Type t) throws TypeInferenceException {
 
 		if (!init.isComplex()) {
-			Type abs = createAbstraction(t);
+			Type abs = createAbstraction();
 			unify(init, abs);
+			unify(abs.getLhs(), t);
 			return abs.getRhs().getId();
 		}
 
@@ -39,20 +40,18 @@ public class TypeUtils {
 		return init.getRhs().getId();
 	}
 
-	public static Type createAbstraction(Type arg) {
-		int typeId = TypeTableImpl.getInstance().createAndRegisterType(new DefaultTypeBuilder());
-		Type t = TypeTableImpl.getInstance().getTypeByID(typeId);
-		int resId = TypeTableImpl.getInstance().createAndRegisterType(new DefaultTypeBuilder().setLeftHandSide(arg).setLeftHandSide(t));
+	public static Type createAbstraction() {
+		int lId = TypeTableImpl.getInstance().createAndRegisterType(new DefaultTypeBuilder());
+		Type lt = TypeTableImpl.getInstance().getTypeByID(lId);
+		int rId = TypeTableImpl.getInstance().createAndRegisterType(new DefaultTypeBuilder());
+		Type rt = TypeTableImpl.getInstance().getTypeByID(rId);
+		int resId = TypeTableImpl.getInstance().createAndRegisterType(new DefaultTypeBuilder().setLeftHandSide(lt).setLeftHandSide(rt));
 		return TypeTableImpl.getInstance().getTypeByID(resId);
 	}
 
 	public static Type unify(Type t1, Type t2) throws TypeInferenceException {
-		Optional<Type> left = t1.getUnificationStrategy().unifyWith(t1, t2);
-		Optional<Type> right = t2.getUnificationStrategy().unifyWith(t2, t1);
-		if (left.isEmpty() && right.isEmpty()) {
-			throw new TypeInferenceException("Cannot unify type " + t1.getName() + " with " + t2.getName());
-		}
-		return left.orElse(right.get());
+		TypeTableImpl.getInstance().unifyTypes(t1.getId(), t2.getId());
+		return TypeTableImpl.getInstance().getTypeByID(t1.getId());
 	}
 
 	public static boolean substitutable(Type t1, Type t2) {

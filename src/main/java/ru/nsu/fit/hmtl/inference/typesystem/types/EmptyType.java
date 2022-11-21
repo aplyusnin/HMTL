@@ -10,7 +10,7 @@ public class EmptyType extends Type {
 	private static final EmptyType instance = new EmptyType();
 
 	private EmptyType() {
-		super(0,null, null, new EmptyTypeUnificationStrategy());
+		super(0,null, null, EmptyTypeUnificationStrategy.getInstance());
 	}
 
 	public static EmptyType getInstance() {

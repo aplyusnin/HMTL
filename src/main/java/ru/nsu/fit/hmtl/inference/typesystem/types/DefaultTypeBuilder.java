@@ -1,8 +1,10 @@
 package ru.nsu.fit.hmtl.inference.typesystem.types;
 
 import ru.nsu.fit.hmtl.inference.typesystem.unification.ComplexUnificationStrategy;
-import ru.nsu.fit.hmtl.inference.typesystem.unification.UnificationStrategy;
 
+/**
+ * Default builder for {@link Type}.
+ */
 public class DefaultTypeBuilder implements TypeBuilder {
 
 	private int id = -1;
@@ -13,19 +15,19 @@ public class DefaultTypeBuilder implements TypeBuilder {
 	}
 
 	@Override
-	public TypeBuilder setId(int id) {
+	public DefaultTypeBuilder setId(int id) {
 		this.id = id;
 		return this;
 	}
 
 	@Override
-	public TypeBuilder setRightHandSide(Type rhs) {
+	public DefaultTypeBuilder setRightHandSide(Type rhs) {
 		this.rhs = rhs;
 		return this;
 	}
 
 	@Override
-	public TypeBuilder setLeftHandSide(Type lhs) {
+	public DefaultTypeBuilder setLeftHandSide(Type lhs) {
 		this.lhs = lhs;
 		return this;
 	}
@@ -42,7 +44,7 @@ public class DefaultTypeBuilder implements TypeBuilder {
 
 	@Override
 	public Type build() {
-		return new Type(id, lhs, rhs, new ComplexUnificationStrategy());
+		return new Type(id, lhs, rhs, ComplexUnificationStrategy.getInstance());
 	}
 
 }

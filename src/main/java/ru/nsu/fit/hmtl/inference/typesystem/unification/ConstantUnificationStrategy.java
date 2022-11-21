@@ -5,7 +5,15 @@ import ru.nsu.fit.hmtl.inference.typesystem.types.Type;
 
 import java.util.Optional;
 
+/**
+ * Unification strategy for constant types.
+ */
 public class ConstantUnificationStrategy implements UnificationStrategy {
+	private final static UnificationStrategy instance = new ConstantUnificationStrategy();
+
+	public static UnificationStrategy getInstance() {
+		return instance;
+	}
 
 	@Override
 	public Optional<Type> unifyWith(Type owner, Type other) throws TypeInferenceException {
