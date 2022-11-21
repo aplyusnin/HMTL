@@ -3,6 +3,9 @@ package ru.nsu.fit.hmtl.inference.typesystem.types;
 import ru.nsu.fit.hmtl.inference.typesystem.TypeInferenceException;
 import ru.nsu.fit.hmtl.inference.typesystem.unification.VariableUnificationStrategy;
 
+/**
+ * Builder for {@link VariableType}.
+ */
 public class VariableTypeBuilder implements TypeBuilder {
 
 	private int id = -1;
@@ -38,7 +41,7 @@ public class VariableTypeBuilder implements TypeBuilder {
 
 	@Override
 	public Type build() {
-		return new VariableType(id, lhs, rhs, new VariableUnificationStrategy());
+		return new VariableType(id, lhs, rhs, VariableUnificationStrategy.getInstance());
 	}
 
 }

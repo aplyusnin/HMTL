@@ -7,7 +7,15 @@ import ru.nsu.fit.hmtl.inference.typesystem.types.Type;
 
 import java.util.Optional;
 
+/**
+ * Unification strategy for type of T -> S kind.
+ */
 public class ComplexUnificationStrategy implements UnificationStrategy {
+	private final static UnificationStrategy instance = new ComplexUnificationStrategy();
+
+	public static UnificationStrategy getInstance() {
+		return instance;
+	}
 
 	@Override
 	public Optional<Type> unifyWith(Type owner, Type other) throws TypeInferenceException {
@@ -20,12 +28,17 @@ public class ComplexUnificationStrategy implements UnificationStrategy {
 			return Optional.empty();
 		}
 
-		Type lhs = TypeUtils.unify(owner.getLhs(), other.getLhs());
-		Type rhs = TypeUtils.unify(owner.getRhs(), other.getRhs());
+		try
+		{
+			Type lhs = TypeUtils.unify(owner.getLhs(), other.getLhs());
+			Type rhs = TypeUtils.unify(owner.getRhs(), other.getRhs());
 
-		int resId = TypeUtils.abstraction(lhs, rhs);
+			int resId = TypeUtils.abstraction(lhs, rhs);
 
- 		return Optional.of(TypeTableImpl.getInstance().getTypeByID(resId));
+			return Optional.of(TypeTableImpl.getInstance().getTypeByID(resId));
+		} catch (TypeInferenceException e) {
+			return Optional.empty();
+		}
 	}
 
 	@Override

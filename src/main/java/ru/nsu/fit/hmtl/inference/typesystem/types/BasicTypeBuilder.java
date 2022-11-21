@@ -5,6 +5,9 @@ import ru.nsu.fit.hmtl.inference.typesystem.unification.ConstantUnificationStrat
 
 import java.util.UUID;
 
+/**
+ * Builder for {@link BasicType}.
+ */
 public class BasicTypeBuilder implements TypeBuilder {
 
 	// Set some random name by default
@@ -12,7 +15,7 @@ public class BasicTypeBuilder implements TypeBuilder {
 	private int id = -1;
 
 	@Override
-	public TypeBuilder setId(int id) {
+	public BasicTypeBuilder setId(int id) {
 		this.id = id;
 		return this;
 	}
@@ -48,7 +51,7 @@ public class BasicTypeBuilder implements TypeBuilder {
 
 	@Override
 	public Type build() {
-		return new BasicType(name, id, new ConstantUnificationStrategy());
+		return new BasicType(name, id, ConstantUnificationStrategy.getInstance());
 	}
 
 }
