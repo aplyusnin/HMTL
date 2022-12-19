@@ -1,7 +1,8 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.inference.context.Context;
-import ru.nsu.fit.hmtl.inference.typesystem.types.Type;
+import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
+import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
+import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 /**
  * Node representing named variable with type.
@@ -20,12 +21,17 @@ public class VariableNode extends TreeNode {
 	}
 
 	@Override
-	protected Type inferTypesInternal(Context ctx) {
-		return null;
+	protected Type inferTypesInternal(TypeContext ctx) {
+		return type;
 	}
 
 	@Override
-	protected void updateTypesInternal(Context ctx) {
+	protected void updateTypesInternal(TypeContext ctx) {
+		type = TypeUtils.updateType(type);
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

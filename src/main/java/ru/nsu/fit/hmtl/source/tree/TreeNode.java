@@ -1,7 +1,7 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.inference.context.Context;
-import ru.nsu.fit.hmtl.inference.typesystem.types.Type;
+import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
+import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public abstract class TreeNode {
 		this.children = new ArrayList<>();
 	}
 
-	public Type inferTypes(Context ctx) {
+	public Type inferTypes(TypeContext ctx) {
 		type = inferTypesInternal(ctx);
 		return type;
 	}
@@ -28,11 +28,15 @@ public abstract class TreeNode {
 		children.add(child);
 	}
 
-	protected abstract Type inferTypesInternal(Context ctx);
+	protected abstract Type inferTypesInternal(TypeContext ctx);
 
-	public void updateTypes(Context ctx) {
+	public void updateTypes(TypeContext ctx) {
 		updateTypesInternal(ctx);
 	}
 
-	protected abstract void updateTypesInternal(Context ctx);
+	protected abstract void updateTypesInternal(TypeContext ctx);
+
+	public Type getType() {
+		return type;
+	}
 }
