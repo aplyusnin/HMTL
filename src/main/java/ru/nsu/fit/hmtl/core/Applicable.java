@@ -10,5 +10,5 @@ public interface Applicable {
 	 * @param ctx - context of the function
 	 * @return - result of the function
 	 */
-	TypedObject eval(ExecutionContext ctx);
+	Expression eval(ExecutionContext ctx);
 }

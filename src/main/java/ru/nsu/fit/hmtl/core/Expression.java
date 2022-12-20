@@ -43,7 +43,7 @@ public class Expression {
 	public Expression eval() {
 		// if Expression result is not yet evaluated and can be evaluated
 		if (result == null && id == names.size()) {
-			result = core.eval(ctx);
+			result = core.eval(ctx).getValue();
 		}
 		return this;
 	}
