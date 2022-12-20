@@ -2,6 +2,7 @@ package ru.nsu.fit.hmtl.source.tree;
 
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
+import ru.nsu.fit.hmtl.source.codegen.SGNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Source node in tree
  */
-public abstract class TreeNode {
+public abstract class TreeNode implements SGNode {
 	// Resulting type of evaluating subtree with given vertex as root
 	protected Type type;
 

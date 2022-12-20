@@ -1,9 +1,11 @@
 package ru.nsu.fit.hmtl.source.tree;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
+import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 /**
  * Node representing function creation.
@@ -56,6 +58,12 @@ public class AbstractionNode extends TreeNode {
 		for (int i = 1; i < children.size(); i++) {
 			children.get(i).generify(subCtx);
 		}
+	}
+
+	/// Codegen
+
+	@Override
+	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
 	}
 
 }

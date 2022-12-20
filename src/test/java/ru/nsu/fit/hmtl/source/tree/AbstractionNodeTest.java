@@ -3,9 +3,12 @@ package ru.nsu.fit.hmtl.source.tree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import ru.nsu.fit.hmtl.core.Applicable;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContextImpl;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
+import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
+import ru.nsu.fit.hmtl.core.typesystem.types.GenericType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.util.HashMap;
@@ -92,7 +95,21 @@ public class AbstractionNodeTest {
 		ab.inferTypes(context);
 		ab.updateTypes(context);
 		ab.generify(context);
-		Assertions.assertEquals("(BT_Numeric->(GT_0->BT_Numeric))", context.lookup("f").getName());
+
+		Type t = context.lookup("f");
+
+		Assertions.assertInstanceOf(ApplicationType.class, t);
+
+		ApplicationType ap = (ApplicationType) t;
+		Assertions.assertEquals("BT_Numeric", ap.getLhs().getName());
+
+		Type r = ap.getRhs();
+		Assertions.assertInstanceOf(ApplicationType.class, r);
+
+		ApplicationType apr = (ApplicationType) r;
+
+		Assertions.assertInstanceOf(GenericType.class, apr.getLhs());
+		Assertions.assertEquals("BT_Numeric", apr.getRhs().getName());
 		storage.remove("f");
 	}
 

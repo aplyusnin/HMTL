@@ -1,8 +1,10 @@
 package ru.nsu.fit.hmtl.source.tree;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
+import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,12 @@ public class ApplicationNode extends TreeNode {
 		for (var c : children) {
 			c.generify(ctx);
 		}
+	}
+
+	/// Codegen
+
+	@Override
+	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
 	}
 
 }
