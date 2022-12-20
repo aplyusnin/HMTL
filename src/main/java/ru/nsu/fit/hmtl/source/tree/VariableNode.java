@@ -1,8 +1,10 @@
 package ru.nsu.fit.hmtl.source.tree;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
+import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 /**
  * Node representing named variable with type.
@@ -38,6 +40,13 @@ public class VariableNode extends TreeNode {
 
 	public String getName() {
 		return name;
+	}
+
+	/// Codegen
+
+	@Override
+	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
+
 	}
 
 }
