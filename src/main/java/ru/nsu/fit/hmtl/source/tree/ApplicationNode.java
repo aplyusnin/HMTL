@@ -35,7 +35,15 @@ public class ApplicationNode extends TreeNode {
 	protected void updateTypesInternal(TypeContext ctx) {
 		type = TypeUtils.updateType(type);
 		for (var c : children) {
-			c.updateTypesInternal(ctx);
+			c.updateTypes(ctx);
+		}
+	}
+
+	@Override
+	protected void generifyInternal(TypeContext ctx) {
+		type = TypeUtils.generify(type);
+		for (var c : children) {
+			c.generify(ctx);
 		}
 	}
 

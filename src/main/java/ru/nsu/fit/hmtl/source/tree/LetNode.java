@@ -19,4 +19,8 @@ public class LetNode extends TreeNode {
 	protected void updateTypesInternal(TypeContext ctx) {
 	}
 
+	@Override
+	protected void generifyInternal(TypeContext ctx) {
+	}
+
 }

@@ -58,6 +58,15 @@ public class TypeTable {
 		return type;
 	}
 
+	public boolean registerFinalType(Type t) {
+		if (typesClasses.containsKey(t.getName())) {
+			return false;
+		}
+
+		typesClasses.put(t.getName(), new EquivalenceClass(true, t));
+		return true;
+	}
+
 	public Type createApplicationType(Type core) {
 		Type var1 = createVaryingType();
 		Type var2 = createVaryingType();
@@ -84,11 +93,15 @@ public class TypeTable {
 		if (cur instanceof ApplicationType) {
 			Type nlhs = degenerateInternal(cache, ((ApplicationType) cur).getLhs());
 			Type nrhs = degenerateInternal(cache, ((ApplicationType) cur).getRhs());
-			return new ApplicationType(nlhs, nrhs);
+			Type res = new ApplicationType(nlhs, nrhs);
+			registerFinalType(res);
+			return res;
 		}
 		if (cur instanceof ListType) {
 			Type core = degenerateInternal(cache, ((ListType) cur).getCore());
-			return new ListType(core);
+			Type res = new ListType(core);
+			registerFinalType(res);
+			return res;
 		}
 		return cur;
 	}
@@ -103,6 +116,35 @@ public class TypeTable {
 
 	public Type getType(String name) {
 		return typesClasses.get(name).getParent();
+	}
+
+	public Type generify(Type t) {
+		Map<String, Type> varToGeneric = new HashMap<>();
+		return generifyInternal(t, varToGeneric);
+	}
+
+	private Type generifyInternal(Type t, Map<String, Type> varToGeneric) {
+		if (t instanceof ListType) {
+			Type tmp = generifyInternal(((ListType) t).getCore(), varToGeneric);
+			Type list = new ListType(tmp);
+			registerFinalType(list);
+			return list;
+		}
+		if (t instanceof ApplicationType) {
+			Type lv = generifyInternal(((ApplicationType) t).getLhs(), varToGeneric);
+			Type rv = generifyInternal(((ApplicationType) t).getRhs(), varToGeneric);
+			Type app = new ApplicationType(lv, rv);
+			registerFinalType(app);
+			return app;
+		}
+		if (t instanceof VaryingType) {
+			Type t1 = getType(t.getName());
+			if (t1 instanceof VaryingType) {
+				equate(t1.getName(), createGenericType().getName());
+			}
+			return getType(t1.getName());
+		}
+		return t;
 	}
 
 	private static class EquivalenceClass {

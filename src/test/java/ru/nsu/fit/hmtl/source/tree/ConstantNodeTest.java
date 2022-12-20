@@ -3,7 +3,6 @@ package ru.nsu.fit.hmtl.source.tree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
@@ -48,9 +47,9 @@ public class ConstantNodeTest {
 		ConstantNode n3 = new ConstantNode("0xff");
 		ConstantNode n4 = new ConstantNode("fail");
 
-		Assertions.assertEquals("BT_Numeric", n1.inferTypesInternal(context).getName());
-		Assertions.assertEquals("BT_Bool", n2.inferTypesInternal(context).getName());
-		Assertions.assertEquals("BT_Byte", n3.inferTypesInternal(context).getName());
-		Assertions.assertThrows(RuntimeException.class, () -> n4.inferTypesInternal(context).getName());
+		Assertions.assertEquals("BT_Numeric", n1.inferTypes(context).getName());
+		Assertions.assertEquals("BT_Bool", n2.inferTypes(context).getName());
+		Assertions.assertEquals("BT_Byte", n3.inferTypes(context).getName());
+		Assertions.assertThrows(RuntimeException.class, () -> n4.inferTypes(context).getName());
 	}
 }

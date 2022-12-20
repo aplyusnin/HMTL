@@ -63,11 +63,19 @@ public class TypeUtils {
 
 	public static Type updateType(Type t) {
 		if (t instanceof ApplicationType) {
-			return new ApplicationType(updateType(((ApplicationType) t).getLhs()), ((ApplicationType) t).getRhs());
+			return new ApplicationType(updateType(((ApplicationType) t).getLhs()), updateType(((ApplicationType) t).getRhs()));
 		}
 		if (t instanceof ListType) {
 			return new ListType(updateType(((ListType) t).getCore()));
 		}
 		return TypeTable.getInstance().getType(t.getName());
+	}
+
+	public static Type degenerate(Type t) {
+		return TypeTable.getInstance().degenerate(t);
+	}
+
+	public static Type generify(Type t) {
+		return TypeTable.getInstance().generify(t);
 	}
 }
