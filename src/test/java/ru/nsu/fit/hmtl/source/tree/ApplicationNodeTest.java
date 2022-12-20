@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
-import ru.nsu.fit.hmtl.core.typesystem.types.GenericType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
+import ru.nsu.fit.hmtl.core.typesystem.types.VaryingType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +42,19 @@ public class ApplicationNodeTest {
 	}
 
 	/// Basic type inference
+
+	@Test
+	public void testZeroArgsApplication() {
+		Type func = TypeTable.getInstance().createVaryingType();
+		storage.put("f", func);
+		ConstantNode fn = new ConstantNode("f");
+		ApplicationNode node = new ApplicationNode();
+		node.addChild(fn);
+
+		Type t = node.inferTypes(context);
+		Assertions.assertInstanceOf(VaryingType.class, t);
+		storage.remove("f");
+	}
 
 	@Test
 	public void testSimpleApplication() {
