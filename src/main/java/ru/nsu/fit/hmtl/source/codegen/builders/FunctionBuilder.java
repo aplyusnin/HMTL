@@ -60,7 +60,7 @@ public class FunctionBuilder extends Builder {
 	}
 
 	private int applyInternal(String res1, String res2) {
-		cfsg.addBodyCodeLine("ApplicableWrapper V_" + vars + " = " + res1 + ".apply(" + res2 + ");");
+		cfsg.addBodyCodeLine("Expression V_" + vars + " = " + res1 + ".apply(" + res2 + ");");
 		vars++;
 		return vars - 1;
 	}
@@ -107,6 +107,6 @@ public class FunctionBuilder extends Builder {
 		cfsg.addAnnotation(AnnotationSourceGenerator.create(Override.class));
 		cfsg.addParameter(VariableSourceGenerator.create(ExecutionContext.class, "ctx"));
 		cfsg.addModifier(Modifier.PUBLIC);
-		cfsg.setReturnType(TypedObject.class);
+		cfsg.setReturnType(Expression.class);
 	}
 }
