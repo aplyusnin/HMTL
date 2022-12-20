@@ -30,6 +30,12 @@ public class VariableNode extends TreeNode {
 		type = TypeUtils.updateType(type);
 	}
 
+	@Override
+	protected void generifyInternal(TypeContext ctx) {
+		type = TypeUtils.generify(type);
+		ctx.setType(name, type);
+	}
+
 	public String getName() {
 		return name;
 	}

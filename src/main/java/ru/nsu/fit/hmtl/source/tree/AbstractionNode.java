@@ -20,7 +20,7 @@ public class AbstractionNode extends TreeNode {
 		TypeContext subCtx = ctx.createSubContext();
 		for (int i = 1; i + 1 < children.size(); i++) {
 			VariableNode tmp = (VariableNode) children.get(i);
-			subCtx.setType(tmp.getName(), tmp.inferTypes(ctx));
+			subCtx.setType(tmp.getName(), tmp.inferTypes(subCtx));
 		}
 
 		Type res = children.get(children.size() - 1).inferTypes(ctx);
@@ -38,6 +38,24 @@ public class AbstractionNode extends TreeNode {
 
 	@Override
 	protected void updateTypesInternal(TypeContext ctx) {
+		type = TypeUtils.updateType(type);
+
+		children.get(0).updateTypes(ctx);
+		TypeContext subCtx = ctx.createSubContext();
+		for (int i = 1; i < children.size(); i++) {
+			children.get(i).updateTypes(subCtx);
+		}
+	}
+
+	@Override
+	protected void generifyInternal(TypeContext ctx) {
+		type = TypeUtils.generify(type);
+
+		ctx.setType(((VariableNode)children.get(0)).getName(), type);
+		TypeContext subCtx = ctx.createSubContext();
+		for (int i = 1; i < children.size(); i++) {
+			children.get(i).generify(subCtx);
+		}
 	}
 
 }
