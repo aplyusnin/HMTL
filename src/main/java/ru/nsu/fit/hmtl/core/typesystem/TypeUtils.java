@@ -8,11 +8,10 @@ import java.util.List;
 
 public class TypeUtils {
 
-	public boolean canSubstitute(Type t1, Type t2) {
-		return t1.equals(t2);
-	}
-
 	public static Type unify(Type t1, Type t2) {
+		t1 = TypeTable.getInstance().getType(t1.getName());
+		t2 = TypeTable.getInstance().getType(t2.getName());
+
 		if (t1.isSubstitutable()) {
 			return TypeTable.getInstance().equate(t1.getName(), t2.getName());
 		}
@@ -21,7 +20,7 @@ public class TypeUtils {
 		}
 
 		if (t1.isComplex() != t2.isComplex()) {
-			throw new RuntimeException("Incompatible types: " + t1.getName() + " and " + t2.getName());
+			throw new TypeInferenceException("Incompatible types: " + t1.getName() + " and " + t2.getName());
 		}
 
 		if (!t1.isComplex()) {
@@ -30,20 +29,32 @@ public class TypeUtils {
 
 		List<Type> lt1 = t1.getInternalTypes();
 		List<Type> lt2 = t2.getInternalTypes();
-		if (lt1.size() != lt2.size()) throw new RuntimeException("Incompatible types");
+		if (lt1.size() != lt2.size())
+			throw new TypeInferenceException("Incompatible types: " + t1.getName() + " and " + t2.getName());
 		List<Type> lt3 = new ArrayList<>(lt1.size());
 		for (int i = 0; i < lt1.size(); i++) {
 			lt3.add(unify(lt1.get(i), lt2.get(i)));
 		}
 		if (lt1.size() == 1) {
-			return new ListType(lt3.get(0));
+			Type lt = new ListType(TypeTable.getInstance().getType(lt3.get(0).getName()));
+
+			TypeTable.getInstance().registerFinalType(lt);
+			return lt;
 		}
 		else {
-			return new ApplicationType(lt3.get(0), lt3.get(1));
+			Type ap = new ApplicationType(
+					TypeTable.getInstance().getType(lt3.get(0).getName()),
+					TypeTable.getInstance().getType(lt3.get(1).getName()));
+
+			TypeTable.getInstance().registerFinalType(ap);
+
+			return ap;
 		}
 	}
 
 	public static Type apply(Type at, Type val) {
+		at = updateType(at);
+		val = updateType(val);
 		if (at instanceof BasicType) {
 			throw new RuntimeException("Cannot cast basic type to functional");
 		}
@@ -63,10 +74,20 @@ public class TypeUtils {
 
 	public static Type updateType(Type t) {
 		if (t instanceof ApplicationType) {
-			return new ApplicationType(updateType(((ApplicationType) t).getLhs()), updateType(((ApplicationType) t).getRhs()));
+			Type val = new ApplicationType(
+					updateType(((ApplicationType) t).getLhs()),
+					updateType(((ApplicationType) t).getRhs()));
+
+			TypeTable.getInstance().registerFinalType(val);
+
+			return val;
 		}
 		if (t instanceof ListType) {
-			return new ListType(updateType(((ListType) t).getCore()));
+			Type val = new ListType(updateType(((ListType) t).getCore()));
+
+			TypeTable.getInstance().registerFinalType(val);
+
+			return val;
 		}
 		return TypeTable.getInstance().getType(t.getName());
 	}

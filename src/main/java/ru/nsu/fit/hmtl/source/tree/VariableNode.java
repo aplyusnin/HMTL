@@ -24,12 +24,14 @@ public class VariableNode extends TreeNode {
 
 	@Override
 	protected Type inferTypesInternal(TypeContext ctx) {
+		ctx.setType(name, type);
 		return type;
 	}
 
 	@Override
 	protected void updateTypesInternal(TypeContext ctx) {
 		type = TypeUtils.updateType(type);
+		ctx.setType(name, type);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package ru.nsu.fit.hmtl.source.codegen;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class ClassComparisonUtils {
 
@@ -9,15 +10,17 @@ public class ClassComparisonUtils {
 			File f1 = new File(file1);
 			File f2 = new File(file2);
 
-			BufferedReader sc1 = new BufferedReader(new FileReader(f1));
-			BufferedReader sc2 = new BufferedReader(new FileReader(f2));
+			Scanner sc1 = new Scanner(new BufferedReader(new FileReader(f1)));
+			Scanner sc2 = new Scanner(new BufferedReader(new FileReader(f2)));
 
-			while (true) {
-				int v1 = sc1.read();
-				int v2 = sc2.read();
-				if (v1 != v2)
+			while (sc1.hasNext() || sc2.hasNext()) {
+				if (sc1.hasNext() != sc2.hasNext()) {
 					return false;
-				if (v1 == -1) break;
+				}
+				String v1 = sc1.next();
+				String v2 = sc2.next();
+				if (!v1.equals(v2))
+					return false;
 			}
 			return true;
 		} catch (Exception e) {
