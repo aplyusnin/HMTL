@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.typesystem.table;
 
+import ru.nsu.fit.hmtl.core.typesystem.TypeInferenceException;
 import ru.nsu.fit.hmtl.core.typesystem.types.*;
 
 import java.util.*;
@@ -110,7 +111,9 @@ public class TypeTable {
 		EquivalenceClass eq1 = typesClasses.get(name1).getRealClass();
 		EquivalenceClass eq2 = typesClasses.get(name2).getRealClass();
 
-		eq1.joinTo(eq2);
+		if (!eq1.joinTo(eq2)) {
+			throw new TypeInferenceException("Cannot equate types: " + name1 + " and " + name2);
+		}
 		return eq2.getParent();
 	}
 
@@ -119,20 +122,19 @@ public class TypeTable {
 	}
 
 	public Type generify(Type t) {
-		Map<String, Type> varToGeneric = new HashMap<>();
-		return generifyInternal(t, varToGeneric);
+		return generifyInternal(t);
 	}
 
-	private Type generifyInternal(Type t, Map<String, Type> varToGeneric) {
+	private Type generifyInternal(Type t) {
 		if (t instanceof ListType) {
-			Type tmp = generifyInternal(((ListType) t).getCore(), varToGeneric);
+			Type tmp = generifyInternal(((ListType) t).getCore());
 			Type list = new ListType(tmp);
 			registerFinalType(list);
 			return list;
 		}
 		if (t instanceof ApplicationType) {
-			Type lv = generifyInternal(((ApplicationType) t).getLhs(), varToGeneric);
-			Type rv = generifyInternal(((ApplicationType) t).getRhs(), varToGeneric);
+			Type lv = generifyInternal(((ApplicationType) t).getLhs());
+			Type rv = generifyInternal(((ApplicationType) t).getRhs());
 			Type app = new ApplicationType(lv, rv);
 			registerFinalType(app);
 			return app;
@@ -167,10 +169,6 @@ public class TypeTable {
 				return this;
 			}
 			return link = link.getRealClass();
-		}
-
-		public EquivalenceClass getLink() {
-			return link;
 		}
 
 		public boolean joinTo(EquivalenceClass other) {

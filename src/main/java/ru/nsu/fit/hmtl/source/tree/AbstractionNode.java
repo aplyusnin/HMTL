@@ -21,8 +21,9 @@ public class AbstractionNode extends TreeNode {
 
 		TypeContext subCtx = ctx.createSubContext();
 		for (int i = 1; i + 1 < children.size(); i++) {
-			VariableNode tmp = (VariableNode) children.get(i);
-			subCtx.setType(tmp.getName(), tmp.inferTypes(subCtx));
+			children.get(i).inferTypes(subCtx);
+//			VariableNode tmp = (VariableNode) children.get(i);
+//			subCtx.setType(tmp.getName(), tmp.inferTypes(subCtx));
 		}
 
 		Type res = children.get(children.size() - 1).inferTypes(ctx);

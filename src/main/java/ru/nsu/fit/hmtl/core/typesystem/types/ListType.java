@@ -20,7 +20,7 @@ public class ListType extends Type {
 
 	@Override
 	public String getName() {
-		return null;
+		return "[" + core.getName() + "]";
 	}
 
 	@Override
