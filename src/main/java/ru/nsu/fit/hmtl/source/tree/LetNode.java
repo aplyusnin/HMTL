@@ -1,6 +1,7 @@
 package ru.nsu.fit.hmtl.source.tree;
 
 import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
@@ -23,13 +24,10 @@ public class LetNode extends TreeNode {
 
 		def.inferTypes(subContext);
 		val.inferTypes(subContext);
-
 		TypeUtils.unify(def.getType(), val.getType());
 
 		body.inferTypes(subContext);
-
 		type = body.getType();
-
 		return type;
 	}
 
@@ -72,7 +70,14 @@ public class LetNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
+	public Expression generateExpression(ExecutionContext ctx) {
+		ExecutionContext ctx1 = ctx.createSubContext();
+		VariableNode def = (VariableNode) children.get(0);
+		TreeNode val = children.get(1);
+		TreeNode body = children.get(2);
+		Expression expr = val.generateExpression(ctx);
+		ctx1.setValue(def.getName(), expr);
+		return body.generateExpression(ctx1);
 	}
 
 }

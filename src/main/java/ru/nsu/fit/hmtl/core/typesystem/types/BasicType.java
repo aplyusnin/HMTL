@@ -10,15 +10,11 @@ public class BasicType extends Type {
 
 	private final String name;
 
-	private final String javaName;
+	private final Class<?> javaClass;
 
-	public BasicType(String name) {
-		this(name, name);
-	}
-
-	public BasicType(String name, String javaName) {
+	public BasicType(String name, Class<?> javaClass) {
 		this.name = "BT_" + name;
-		this.javaName = javaName;
+		this.javaClass = javaClass;
 	}
 
 	@Override
@@ -41,8 +37,8 @@ public class BasicType extends Type {
 		return Collections.emptyList();
 	}
 
-	public String getJavaName() {
-		return javaName;
+	public Class<?> getJavaClass() {
+		return javaClass;
 	}
 
 	@Override

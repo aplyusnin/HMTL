@@ -10,12 +10,11 @@ Unlike Clojure, HMTL provides type system and type inference during compiling/in
 
 There are 6 basic types represented in HMTL:
 
-1. Empty
-2. Natural
-3. Byte
-4. Character
-5. List
-6. Functor
+1. Numeric 
+2. Byte
+3. Character
+4. List
+5. Functor
 
 ### Complex types (structures)
 

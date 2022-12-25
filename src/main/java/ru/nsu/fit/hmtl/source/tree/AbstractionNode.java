@@ -1,11 +1,12 @@
 package ru.nsu.fit.hmtl.source.tree;
 
 import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.LispUDFExpression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 /**
  * Node representing function creation.
@@ -22,11 +23,9 @@ public class AbstractionNode extends TreeNode {
 		TypeContext subCtx = ctx.createSubContext();
 		for (int i = 1; i + 1 < children.size(); i++) {
 			children.get(i).inferTypes(subCtx);
-//			VariableNode tmp = (VariableNode) children.get(i);
-//			subCtx.setType(tmp.getName(), tmp.inferTypes(subCtx));
 		}
 
-		Type res = children.get(children.size() - 1).inferTypes(ctx);
+		Type res = children.get(children.size() - 1).inferTypes(subCtx);
 
 		TypeUtils.unify(fdef.getType(), res);
 
@@ -64,7 +63,20 @@ public class AbstractionNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
+	public Expression generateExpression(ExecutionContext ctx) {
+		ExecutionContext fctx = ctx.createSubContext();
+		LispUDFExpression udfExpression = new LispUDFExpression(fctx, type);
+		VariableNode fdef = (VariableNode) children.get(0);
+
+		for (int i = 1; i + 1 < children.size(); i++) {
+			VariableNode vnode = (VariableNode) children.get(i);
+			udfExpression.addArg(vnode.getName(), vnode.type);
+		}
+
+		udfExpression.setBody(children.get(children.size() - 1).generateExpression(fctx));
+
+		ctx.setValue(fdef.getName(), udfExpression);
+		return udfExpression;
 	}
 
 }

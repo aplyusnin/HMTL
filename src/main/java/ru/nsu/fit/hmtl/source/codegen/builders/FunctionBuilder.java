@@ -22,7 +22,7 @@ public class FunctionBuilder extends Builder {
 	}
 
 	public Class<?> make() {
-		cfsg.useType(TypedObject.class);
+//		cfsg.useType(TypedObject.class);
 		ccsg.addMethod(cfsg);
 
 		return super.make();

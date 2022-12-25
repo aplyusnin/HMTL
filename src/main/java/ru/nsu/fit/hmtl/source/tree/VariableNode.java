@@ -1,6 +1,8 @@
 package ru.nsu.fit.hmtl.source.tree;
 
+import ru.nsu.fit.hmtl.core.DummyExpression;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
@@ -47,8 +49,8 @@ public class VariableNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
-
+	public Expression generateExpression(ExecutionContext ctx) {
+		throw new RuntimeException("Variable declaration does not produce any expression");
 	}
 
 }

@@ -60,4 +60,6 @@ public abstract class TreeNode implements SGNode {
 	public Type getType() {
 		return type;
 	}
+
+
 }
