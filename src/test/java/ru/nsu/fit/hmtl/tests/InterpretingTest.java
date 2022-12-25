@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.tests;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.StlExecutionContext;
@@ -238,6 +239,7 @@ public class InterpretingTest {
 	}
 
 	@Test
+	@Disabled
 	public void testTwoArgAbstraction() {
 		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
 		ExecutionContext ectx = StlExecutionContext.getInstance().createSubContext();

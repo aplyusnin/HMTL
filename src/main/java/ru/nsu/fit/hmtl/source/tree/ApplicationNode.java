@@ -55,9 +55,9 @@ public class ApplicationNode extends TreeNode {
 	@Override
 	public Expression generateExpression(ExecutionContext ctx) {
 		List<Expression> exprs = new ArrayList<>(children.size());
+		ExecutionContext sctx = ctx.createSubContext();
 
 		for (var c : children) {
-			ExecutionContext sctx = ctx.createCopy();
 			exprs.add(c.generateExpression(sctx));
 		}
 
