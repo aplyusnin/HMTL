@@ -1,6 +1,7 @@
 package ru.nsu.fit.hmtl.source.tree;
 
 import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
@@ -52,7 +53,21 @@ public class ApplicationNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public void generateSource(FunctionBuilder fb, ExecutionContext ctx) {
+	public Expression generateExpression(ExecutionContext ctx) {
+		List<Expression> exprs = new ArrayList<>(children.size());
+
+		for (var c : children) {
+			ExecutionContext sctx = ctx.createCopy();
+			exprs.add(c.generateExpression(sctx));
+		}
+
+		Expression current = exprs.get(0).eval();
+
+		for (int i = 1; i < exprs.size(); i++) {
+			current = current.apply(exprs.get(i));
+		}
+
+		return current;
 	}
 
 }

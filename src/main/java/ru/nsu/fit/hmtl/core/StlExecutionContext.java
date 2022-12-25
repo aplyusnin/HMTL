@@ -1,30 +1,27 @@
-package ru.nsu.fit.hmtl.core.typesystem.context;
+package ru.nsu.fit.hmtl.core;
 
 import ru.nsu.fit.hmtl.core.lang.Function;
-import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
-import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class StlTypeContext implements TypeContext {
-	private static StlTypeContext executionContext = null;
+public class StlExecutionContext implements ExecutionContext {
 
-	public static StlTypeContext getInstance() {
-		if (executionContext == null) executionContext = new StlTypeContext();
+	private static StlExecutionContext executionContext = null;
+
+	public static StlExecutionContext getInstance() {
+		if (executionContext == null) executionContext = new StlExecutionContext();
 		return executionContext;
 	}
 
-	private final Map<String, Type> storage;
+	private final ExecutionContext parent;
+	private final Map<String, Expression> storage;
 
-	private final TypeContext parent;
-
-	private StlTypeContext() {
-		parent = new ParsingTypeContext();
+	private StlExecutionContext() {
+		parent = new ParsingExecutionContext();
 		storage = new HashMap<>();
 		populateContext();
 	}
@@ -35,8 +32,8 @@ public class StlTypeContext implements TypeContext {
 		try
 		{
 			File file = new File(
-					ClassLoader.getSystemClassLoader()
-							.getResource("./ru/nsu/fit/hmtl/core/lang/").toURI());
+							ClassLoader.getSystemClassLoader()
+									.getResource("./ru/nsu/fit/hmtl/core/lang/").toURI());
 			dfs(file, "ru/nsu/fit/hmtl/core/lang", desc);
 
 		} catch (Exception e) {
@@ -48,7 +45,7 @@ public class StlTypeContext implements TypeContext {
 			try {
 				if (d.getSuperclass().equals(Function.class)) {
 					Function f = (Function) d.newInstance();
-					storage.put(f.toString(), f.getType());
+					storage.put(f.toString(), f);
 				}
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -67,13 +64,12 @@ public class StlTypeContext implements TypeContext {
 			InputStream stream = dir.toURI().toURL().openStream();
 			assert stream != null;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
 			cl.addAll(reader.lines()
-					          .filter(line -> line.endsWith(".class"))
-					          .map(x -> getClass(filepath, x))
-					          .collect(Collectors.toSet()));
+					.filter(line -> line.endsWith(".class"))
+					.map(x -> getClass(filepath, x))
+					.collect(Collectors.toSet()));
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+
 		}
 	}
 
@@ -90,21 +86,33 @@ public class StlTypeContext implements TypeContext {
 		return null;
 	}
 
+
 	@Override
-	public Type lookup(String name) {
-		if (storage.containsKey(name)) return storage.get(name);
-		return parent.lookup(name);
+	public Expression lookup(String name) {
+		if (storage.containsKey(name))
+			return storage.get(name);
+		else {
+			return parent.lookup(name);
+		}
 	}
 
 	@Override
-	public TypeContext createSubContext() {
-		return new TypeContextImpl(this);
+	public boolean contains(String name) {
+		if (storage.containsKey(name)) return true;
+		return parent.contains(name);
 	}
 
 	@Override
-	public void setType(String name, Type type)
-	{
-
+	public ExecutionContext createSubContext() {
+		return new ExecutionContextImpl(this);
 	}
 
+	@Override
+	public ExecutionContext createCopy() {
+		return this;
+	}
+
+	@Override
+	public void setValue(String name, Expression newValue) {
+	}
 }

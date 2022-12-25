@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.typesystem.table;
 
+import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.typesystem.TypeInferenceException;
 import ru.nsu.fit.hmtl.core.typesystem.types.*;
 
@@ -22,24 +23,18 @@ public class TypeTable {
 
 	private TypeTable() {
 		this.typesClasses = new HashMap<>();
-		createBasicType("Numeric", "Integer");
-		createBasicType("Byte", "Byte");
-		createBasicType("Bool", "Boolean");
-		createBasicType("Char", "Character");
+		createBasicType("Numeric", Integer.class);
+		createBasicType("Bool", Boolean.class);
+		createBasicType("Byte", Byte.class);
+		createBasicType("Char", Character.class);
 	}
 
 	private final Map<String, EquivalenceClass> typesClasses;
 	private int varTypes = 0;
 	private int genericTypes = 0;
 
-	public Type createBasicType(String name, String javaName) {
-		BasicType type = new BasicType(name, javaName);
-		typesClasses.put(type.getName(), new EquivalenceClass(true, type));
-		return type;
-	}
-
-	public Type createBasicType(String name) {
-		BasicType type = new BasicType(name, name);
+	public Type createBasicType(String name, Class<?> javaClass) {
+		BasicType type = new BasicType(name, javaClass);
 		typesClasses.put(type.getName(), new EquivalenceClass(true, type));
 		return type;
 	}

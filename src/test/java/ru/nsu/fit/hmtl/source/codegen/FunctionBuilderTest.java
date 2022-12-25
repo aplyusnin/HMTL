@@ -4,16 +4,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.ExecutionContextImpl;
-import ru.nsu.fit.hmtl.core.stl.StlExecutionContext;
+import ru.nsu.fit.hmtl.core.StlExecutionContext;
+import ru.nsu.fit.hmtl.core.typesystem.context.StlTypeContext;
+import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 public class FunctionBuilderTest {
 
 	@Test
 	public void simpleBuildTest() {
-
 		ExecutionContext ctx0 = StlExecutionContext.getInstance();
-
+		TypeContext ctx = StlTypeContext.getInstance();
+//		var t = ctx0.lookup("0xw31");
+		var t1 = ctx.lookup("0x31");
 		ExecutionContextImpl ctx1 = new ExecutionContextImpl(ctx0);
 		ctx1.setValue("a", null);
 		ExecutionContextImpl ctx2 = new ExecutionContextImpl(ctx1);

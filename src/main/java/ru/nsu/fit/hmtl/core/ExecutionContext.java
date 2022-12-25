@@ -11,5 +11,7 @@ public interface ExecutionContext {
 
 	ExecutionContext createSubContext();
 
+	ExecutionContext createCopy();
+
 	void setValue(String name, Expression newValue);
 }

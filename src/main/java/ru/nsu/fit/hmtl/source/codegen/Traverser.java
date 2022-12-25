@@ -19,7 +19,7 @@ public class Traverser {
 	}
 
 	public void generateSource() {
-		root.generateSource(builder, ctx);
+//		root.generateSource(builder, ctx);
 		builder.make();
 	}
 

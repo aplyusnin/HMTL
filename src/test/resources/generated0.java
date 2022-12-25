@@ -3,8 +3,6 @@ package ru.nsu.fit.hmtl.core.generated;
 import java.lang.Override;
 import ru.nsu.fit.hmtl.core.Applicable;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
-import ru.nsu.fit.hmtl.core.Expression;
-import ru.nsu.fit.hmtl.core.TypedObject;
 
 public class Applicable1 implements Applicable { 
 

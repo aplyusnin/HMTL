@@ -36,6 +36,13 @@ public class ExecutionContextImpl implements ExecutionContext {
 	}
 
 	@Override
+	public ExecutionContext createCopy() {
+		ExecutionContextImpl ctx = new ExecutionContextImpl(parent);
+		ctx.layer.putAll(layer);
+		return ctx;
+	}
+
+	@Override
 	public void setValue(String name, Expression newValue) {
 		layer.put(name, newValue);
 	}
