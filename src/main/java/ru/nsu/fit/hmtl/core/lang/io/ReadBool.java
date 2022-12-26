@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.io;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
 import ru.nsu.fit.hmtl.core.lang.Function;
@@ -17,7 +18,7 @@ public class ReadBool extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		boolean val = sc.nextBoolean();
 		return BasicUtils.createBool(val);
 	}

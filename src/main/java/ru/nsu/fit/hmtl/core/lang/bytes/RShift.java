@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.bytes;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
@@ -20,10 +21,10 @@ public class RShift extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 2) return this;
-		BasicObject lhs = (BasicObject) applied.get(0).eval();
-		BasicObject rhs = (BasicObject) applied.get(1).eval();
+		BasicObject lhs = (BasicObject) applied.get(0).eval(ctx);
+		BasicObject rhs = (BasicObject) applied.get(1).eval(ctx);
 		return BasicUtils.createNumeric((Byte) lhs.getValue() >> (Integer) rhs.getValue());
 	}
 

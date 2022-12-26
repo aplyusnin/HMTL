@@ -1,12 +1,13 @@
 package ru.nsu.fit.hmtl.core.lang.arithmetics;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
+import ru.nsu.fit.hmtl.core.lang.Function;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.core.Expression;
-import ru.nsu.fit.hmtl.core.lang.BasicObject;
-import ru.nsu.fit.hmtl.core.lang.Function;
 
 import java.util.List;
 
@@ -20,10 +21,10 @@ public class Div extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 2) return this;
-		BasicObject lhs = (BasicObject) applied.get(0).eval();
-		BasicObject rhs = (BasicObject) applied.get(1).eval();
+		BasicObject lhs = (BasicObject) applied.get(0).eval(ctx);
+		BasicObject rhs = (BasicObject) applied.get(1).eval(ctx);
 		return BasicUtils.createNumeric((Integer) lhs.getValue() / (Integer) rhs.getValue());
 	}
 

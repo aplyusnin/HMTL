@@ -6,7 +6,7 @@ public class ParsingExecutionContext implements ExecutionContext {
 
 	@Override
 	public Expression lookup(String name) {
-		Expression value = null;
+		Expression value;
 		value = isBool(name);
 		if (value != null) return value;
 		value = isChar(name);
@@ -37,6 +37,11 @@ public class ParsingExecutionContext implements ExecutionContext {
 	@Override
 	public void setValue(String name, Expression newValue) {
 
+	}
+
+	@Override
+	public ExecutionContext getParent() {
+		return null;
 	}
 
 	private Expression isBool(String val) {

@@ -2,7 +2,10 @@ package ru.nsu.fit.hmtl.source.codegen.builders;
 
 import org.burningwave.core.assembler.ComponentContainer;
 import org.burningwave.core.assembler.ComponentSupplier;
-import org.burningwave.core.classes.*;
+import org.burningwave.core.classes.ClassFactory;
+import org.burningwave.core.classes.ClassSourceGenerator;
+import org.burningwave.core.classes.TypeDeclarationSourceGenerator;
+import org.burningwave.core.classes.UnitSourceGenerator;
 import ru.nsu.fit.hmtl.core.Applicable;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
 

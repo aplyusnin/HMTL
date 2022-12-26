@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public interface Expression {
 
-	default Expression eval() {
+	default Expression eval(ExecutionContext ctx) {
 		return this;
 	}
 

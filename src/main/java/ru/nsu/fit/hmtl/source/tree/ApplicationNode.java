@@ -1,11 +1,10 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.LispApplyExpression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,21 +52,20 @@ public class ApplicationNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public Expression generateExpression(ExecutionContext ctx) {
+	public Expression generateExpression() {
 		List<Expression> exprs = new ArrayList<>(children.size());
-		ExecutionContext sctx = ctx.createSubContext();
 
 		for (var c : children) {
-			exprs.add(c.generateExpression(sctx));
+			exprs.add(c.generateExpression());
 		}
 
-		Expression current = exprs.get(0).eval();
+		Expression aExpr = new LispApplyExpression(exprs.get(0));
 
 		for (int i = 1; i < exprs.size(); i++) {
-			current = current.apply(exprs.get(i));
+			aExpr = aExpr.apply(exprs.get(i));
 		}
 
-		return current;
+		return aExpr;
 	}
 
 }

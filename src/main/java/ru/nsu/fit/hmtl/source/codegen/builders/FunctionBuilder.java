@@ -1,8 +1,10 @@
 package ru.nsu.fit.hmtl.source.codegen.builders;
 
-import org.burningwave.core.classes.*;
-import ru.nsu.fit.hmtl.core.*;
+import org.burningwave.core.classes.AnnotationSourceGenerator;
+import org.burningwave.core.classes.FunctionSourceGenerator;
+import org.burningwave.core.classes.VariableSourceGenerator;
 import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.misc.Preconditions;
 
 import java.lang.reflect.Modifier;
@@ -95,7 +97,7 @@ public class FunctionBuilder extends Builder {
 	}
 
 	private void callReturnInternal(String res) {
-		cfsg.addBodyCodeLine("return " + res + ".eval();");
+		cfsg.addBodyCodeLine("return " + res + ".eval(ctx);");
 	}
 
 	@Override

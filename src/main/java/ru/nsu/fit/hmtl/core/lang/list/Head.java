@@ -1,14 +1,15 @@
 package ru.nsu.fit.hmtl.core.lang.list;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.BasicObject;
+import ru.nsu.fit.hmtl.core.lang.Function;
+import ru.nsu.fit.hmtl.core.lang.ListObject;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.BasicType;
 import ru.nsu.fit.hmtl.core.typesystem.types.ListType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.core.Expression;
-import ru.nsu.fit.hmtl.core.lang.BasicObject;
-import ru.nsu.fit.hmtl.core.lang.Function;
-import ru.nsu.fit.hmtl.core.lang.ListObject;
 
 import java.util.List;
 
@@ -25,11 +26,11 @@ public class Head extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		ListObject object = ((ListObject) applied.get(0));
 		Expression expr = object.getData().get(object.getPos());
 		if (expr.getType() instanceof BasicType) {
-			expr = new BasicObject(expr.eval(), expr.getType());
+			expr = new BasicObject(expr.eval(ctx), expr.getType());
 		}
 		return expr;
 	}

@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.list;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
@@ -24,7 +25,7 @@ public class Len extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		ListObject lo = (ListObject) applied.get(0);
 		return new BasicObject(lo.getData().size() - lo.getPos(), BasicUtils.getInt());
 	}

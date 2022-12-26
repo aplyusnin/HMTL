@@ -46,4 +46,10 @@ public class ExecutionContextImpl implements ExecutionContext {
 	public void setValue(String name, Expression newValue) {
 		layer.put(name, newValue);
 	}
+
+	@Override
+	public ExecutionContext getParent() {
+		return parent;
+	}
+
 }

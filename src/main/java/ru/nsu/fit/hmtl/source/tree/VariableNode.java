@@ -1,12 +1,10 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.core.DummyExpression;
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
+import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 /**
  * Node representing named variable with type.
@@ -16,7 +14,7 @@ public class VariableNode extends TreeNode {
 	private final String name;
 
 	public VariableNode(String name) {
-		this(name, null);
+		this(name, TypeTable.getInstance().createVaryingType());
 	}
 
 	public VariableNode(String name, Type t) {
@@ -49,7 +47,7 @@ public class VariableNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public Expression generateExpression(ExecutionContext ctx) {
+	public Expression generateExpression() {
 		throw new RuntimeException("Variable declaration does not produce any expression");
 	}
 

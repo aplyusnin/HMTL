@@ -1,10 +1,11 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.LispDefExpression;
 import ru.nsu.fit.hmtl.core.lang.LispUDFExpression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
+import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
@@ -18,24 +19,23 @@ public class AbstractionNode extends TreeNode {
 	@Override
 	protected Type inferTypesInternal(TypeContext ctx) {
 		VariableNode fdef = (VariableNode) children.get(0);
-		ctx.setType(fdef.getName(), fdef.inferTypes(ctx));
 
+		Type resType = fdef.getType();
+		Type fType = resType;
 		TypeContext subCtx = ctx.createSubContext();
-		for (int i = 1; i + 1 < children.size(); i++) {
-			children.get(i).inferTypes(subCtx);
+		for (int i = children.size() - 2; i > 0; i--) {
+			Type arg = children.get(i).inferTypes(subCtx);
+			fType = new ApplicationType(arg, fType);
+			TypeTable.getInstance().registerFinalType(fType);
 		}
+
+		ctx.setType(fdef.getName(), fType);
 
 		Type res = children.get(children.size() - 1).inferTypes(subCtx);
 
-		TypeUtils.unify(fdef.getType(), res);
+		TypeUtils.unify(resType, res);
 
-		Type rval = res;
-
-		for (int i = children.size() - 2; i > 0; i--) {
-			rval = new ApplicationType(children.get(i).getType(), rval);
-		}
-
-		return rval;
+		return fType;
 	}
 
 	@Override
@@ -63,20 +63,19 @@ public class AbstractionNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public Expression generateExpression(ExecutionContext ctx) {
-		ExecutionContext fctx = ctx.createSubContext();
-		LispUDFExpression udfExpression = new LispUDFExpression(fctx, type);
+	public Expression generateExpression() {
+
 		VariableNode fdef = (VariableNode) children.get(0);
+		LispUDFExpression udfExpression = new LispUDFExpression(type);
 
 		for (int i = 1; i + 1 < children.size(); i++) {
 			VariableNode vnode = (VariableNode) children.get(i);
 			udfExpression.addArg(vnode.getName(), vnode.type);
 		}
 
-		udfExpression.setBody(children.get(children.size() - 1).generateExpression(fctx));
+		udfExpression.setBody(children.get(children.size() - 1).generateExpression());
 
-		ctx.setValue(fdef.getName(), udfExpression);
-		return udfExpression;
+		return new LispDefExpression(fdef.getName(), udfExpression);
 	}
 
 }

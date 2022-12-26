@@ -1,7 +1,6 @@
 package ru.nsu.fit.hmtl.core.typesystem.context;
 
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
-import ru.nsu.fit.hmtl.core.typesystem.types.GenericType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 public class ParsingTypeContext implements TypeContext {
