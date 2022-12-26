@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.io;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
@@ -9,7 +10,6 @@ import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Print extends Function {
@@ -23,10 +23,10 @@ public class Print extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 1) return this;
 
-		Expression expr = applied.get(0).eval();
+		Expression expr = applied.get(0).eval(ctx);
 
 		if (expr instanceof BasicObject) {
 			BasicObject o = (BasicObject) expr;
@@ -38,7 +38,7 @@ public class Print extends Function {
 			for (int i = l.getPos(); i < l.getData().size(); i++) {
 				Expression p = new Print();
 				p = p.apply(l.getData().get(i));
-				p.eval();
+				p.eval(ctx);
 				if (i + 1 < l.getData().size()) System.out.println(", ");
 			}
 			System.out.println("]");

@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.list;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.Function;
 import ru.nsu.fit.hmtl.core.lang.ListObject;
@@ -8,7 +9,6 @@ import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.ListType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Concat extends Function {
@@ -26,7 +26,7 @@ public class Concat extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		ListObject ll = (ListObject) applied.get(0);
 		ListObject rl = (ListObject) applied.get(1);
 

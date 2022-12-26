@@ -1,7 +1,6 @@
 package ru.nsu.fit.hmtl.core.typesystem.context;
 
 import ru.nsu.fit.hmtl.core.lang.Function;
-import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.io.BufferedReader;
@@ -29,7 +28,7 @@ public class StlTypeContext implements TypeContext {
 		populateContext();
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "ConstantConditions"})
 	private void populateContext() {
 		Set<Class<?>> desc = new HashSet<>();
 		try

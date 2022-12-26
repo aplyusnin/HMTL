@@ -1,16 +1,17 @@
 package ru.nsu.fit.hmtl.source.tree;
 
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.LispUDFExpression;
 import ru.nsu.fit.hmtl.core.typesystem.TypeUtils;
 import ru.nsu.fit.hmtl.core.typesystem.context.TypeContext;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.source.codegen.builders.FunctionBuilder;
 
 /**
  * Node representing let-clause.
  */
 public class LetNode extends TreeNode {
+
+	private static int cnt;
 
 	public LetNode() {}
 
@@ -70,14 +71,19 @@ public class LetNode extends TreeNode {
 	/// Codegen
 
 	@Override
-	public Expression generateExpression(ExecutionContext ctx) {
-		ExecutionContext ctx1 = ctx.createSubContext();
+	public Expression generateExpression() {
+		LispUDFExpression udfExpression = new LispUDFExpression(type);
+		// ExecutionContext ctx1 = ctx.createSubContext();
 		VariableNode def = (VariableNode) children.get(0);
+		udfExpression.addArg(def.getName(), def.type);
 		TreeNode val = children.get(1);
 		TreeNode body = children.get(2);
-		Expression expr = val.generateExpression(ctx);
-		ctx1.setValue(def.getName(), expr);
-		return body.generateExpression(ctx1);
+		udfExpression.setBody(body.generateExpression());
+		Expression expr = val.generateExpression();
+
+		udfExpression = (LispUDFExpression) udfExpression.apply(expr);
+
+		return udfExpression;
 	}
 
 }

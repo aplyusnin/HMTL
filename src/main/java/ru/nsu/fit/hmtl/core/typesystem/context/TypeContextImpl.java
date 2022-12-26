@@ -1,6 +1,5 @@
 package ru.nsu.fit.hmtl.core.typesystem.context;
 
-import ru.nsu.fit.hmtl.core.typesystem.types.GenericType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.util.HashMap;

@@ -12,33 +12,38 @@ import java.util.List;
 public class LispUDFExpression implements Expression {
 	private final List<String> args;
 	private final List<Type> argsType;
-	private int applied;
+	private final List<Expression> applied;
 
-	private final ExecutionContext ctx;
 	private final Type type;
 
 	private Expression body;
 
-	public LispUDFExpression(ExecutionContext ctx, Type type) {
+	public LispUDFExpression(Type type) {
 		args = new ArrayList<>();
 		this.argsType = new ArrayList<>();
 		this.type = type;
-		this.ctx = ctx;
-		applied = 0;
+		applied = new ArrayList<>();
 	}
 
 	@Override
-	public Expression eval() {
-		if (applied < args.size()) return this;
-		return body.eval();
+	public Expression eval(ExecutionContext ctx) {
+		if (applied.size() < args.size()) return this;
+		ExecutionContext copy = ctx.createSubContext();
+
+		for (int i = 0; i < args.size(); i++) {
+			copy.setValue(args.get(i), applied.get(i).eval(copy));
+		}
+
+		return body.eval(copy);
 	}
 
 	@Override
 	public Expression apply(Expression other) {
-		if (applied + 1 > args.size()) {
+		int id = applied.size();
+		if (id + 1 > args.size()) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
 		}
-		if (!argsType.get(applied).getName().equals(other.getType().getName())) {
+		if (!argsType.get(id).getName().equals(other.getType().getName())) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
 		}
 		return applyImmutable(other);
@@ -46,15 +51,14 @@ public class LispUDFExpression implements Expression {
 
 	private Expression applyImmutable(Expression other) {
 		LispUDFExpression res = (LispUDFExpression) deepCopy();
-		res.ctx.setValue(args.get(applied), other);
-		res.applied++;
+		res.applied.add(other);
 		return res;
 	}
 
 	@Override
 	public Type getType() {
 		Type val = type;
-		for (int i = 0; i < applied; i++) {
+		for (int i = 0; i < applied.size(); i++) {
 			val = ((ApplicationType) val).getRhs();
 		}
 		return val;
@@ -63,8 +67,8 @@ public class LispUDFExpression implements Expression {
 	@Override
 	public Expression deepCopy() {
 		//ExecutionContext subCtx = ctx.createCopy();
-		LispUDFExpression lexpr = new LispUDFExpression(ctx, type);
-		lexpr.applied = applied;
+		LispUDFExpression lexpr = new LispUDFExpression(type);
+		lexpr.applied.addAll(applied);
 		lexpr.body = body;
 		lexpr.argsType.addAll(argsType);
 		lexpr.args.addAll(args);

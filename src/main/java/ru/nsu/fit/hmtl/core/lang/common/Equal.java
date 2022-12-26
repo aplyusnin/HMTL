@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.common;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
@@ -23,22 +24,22 @@ public class Equal extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 2) return this;
-		Expression llo = applied.get(0).eval();
-		Expression rlo = applied.get(0).eval();
+		Expression llo = applied.get(0).eval(ctx);
+		Expression rlo = applied.get(1).eval(ctx);
 
 		if (llo.getClass() != rlo.getClass()) {
 			return BasicUtils.createBool(false);
 		}
 		if (llo.getClass() == BasicObject.class) {
-			BasicObject lhs = (BasicObject) applied.get(0).eval();
-			BasicObject rhs = (BasicObject) applied.get(1).eval();
+			BasicObject lhs = (BasicObject) llo;
+			BasicObject rhs = (BasicObject) rlo;
 			return BasicUtils.createBool(Objects.equals(lhs.getValue(), rhs.getValue()));
 		}
 		if (llo.getClass() == ListObject.class) {
-			ListObject lhs = (ListObject) applied.get(0).eval();
-			ListObject rhs = (ListObject) applied.get(1).eval();
+			ListObject lhs = (ListObject) llo;
+			ListObject rhs = (ListObject) rlo;
 
 			if (lhs.getData().size() - lhs.getPos() != rhs.getData().size() - rhs.getPos()) {
 				return BasicUtils.createBool(false);
@@ -47,7 +48,7 @@ public class Equal extends Function {
 				Expression eq = new Equal();
 				eq = eq.apply(lhs.getData().get(i));
 				eq = eq.apply(rhs.getData().get(i));
-				BasicObject res = (BasicObject) eq.eval();
+				BasicObject res = (BasicObject) eq.eval(ctx);
 				if (!((Boolean) res.getValue())) {
 					return BasicUtils.createBool(false);
 				}

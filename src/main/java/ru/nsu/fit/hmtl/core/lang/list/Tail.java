@@ -1,12 +1,13 @@
 package ru.nsu.fit.hmtl.core.lang.list;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
+import ru.nsu.fit.hmtl.core.lang.Function;
+import ru.nsu.fit.hmtl.core.lang.ListObject;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.ListType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.core.Expression;
-import ru.nsu.fit.hmtl.core.lang.Function;
-import ru.nsu.fit.hmtl.core.lang.ListObject;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Tail extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		ListObject lo = (ListObject) applied.get(0);
 		ListObject copy = (ListObject) lo.deepCopy();
 		copy.inc();

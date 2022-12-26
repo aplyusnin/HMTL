@@ -1,5 +1,6 @@
 package ru.nsu.fit.hmtl.core.lang.common;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.lang.BasicUtils;
@@ -24,15 +25,15 @@ public class If extends Function {
 	}
 
 	@Override
-	public Expression eval() {
+	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 3) return this;
 
-		BasicObject val = (BasicObject) applied.get(0).eval();
+		BasicObject val = (BasicObject) applied.get(0).eval(ctx);
 
 		if ((Boolean) val.getValue()) {
-			return applied.get(1).eval();
+			return applied.get(1).eval(ctx);
 		} else {
-			return applied.get(2).eval();
+			return applied.get(2).eval(ctx);
 		}
 	}
 

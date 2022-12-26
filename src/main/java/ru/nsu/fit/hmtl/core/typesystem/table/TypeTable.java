@@ -1,10 +1,10 @@
 package ru.nsu.fit.hmtl.core.typesystem.table;
 
-import ru.nsu.fit.hmtl.core.lang.BasicObject;
 import ru.nsu.fit.hmtl.core.typesystem.TypeInferenceException;
 import ru.nsu.fit.hmtl.core.typesystem.types.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A type table for processing type joining

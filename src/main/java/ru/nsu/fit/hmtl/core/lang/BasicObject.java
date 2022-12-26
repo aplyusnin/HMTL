@@ -1,9 +1,8 @@
 package ru.nsu.fit.hmtl.core.lang;
 
-import ru.nsu.fit.hmtl.core.ExecutionContext;
+import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.typesystem.types.BasicType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
-import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.misc.Preconditions;
 
 import java.util.Objects;

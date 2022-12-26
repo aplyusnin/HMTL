@@ -1,10 +1,9 @@
 package ru.nsu.fit.hmtl.core.lang;
 
-import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
-import ru.nsu.fit.hmtl.core.typesystem.types.GenericType;
-import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.InvalidApplicationException;
+import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
+import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +24,12 @@ public abstract class Function implements Expression {
 		if (id + 1 > types.size()) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
 		}
-		// generic types is exchangeable by any other type. It is checked on previous step
-		if (types.get(id) instanceof GenericType) {
+		/*if (types.get(id) instanceof GenericType) {
 			return applyImmutable(other);
 		}
 		if (!types.get(id).getName().equals(other.getType().getName())) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
-		}
+		}*/
 		return applyImmutable(other);
 	}
 
@@ -52,6 +50,7 @@ public abstract class Function implements Expression {
 	}
 
 	@Override
+	@SuppressWarnings("deprecation")
 	public Expression deepCopy() {
 		try {
 			Function f = this.getClass().newInstance();

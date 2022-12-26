@@ -1,7 +1,6 @@
 package ru.nsu.fit.hmtl.source.codegen;
 
 
-import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 
 /**
@@ -9,7 +8,5 @@ import ru.nsu.fit.hmtl.core.Expression;
  */
 public interface SGNode {
 
-	// void generateSource(FunctionBuilder fb, ExecutionContext ctx);
-
-	Expression generateExpression(ExecutionContext ctx);
+	Expression generateExpression();
 }

@@ -2,9 +2,10 @@ package ru.nsu.fit.hmtl.core;
 
 import ru.nsu.fit.hmtl.core.lang.Function;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class StlExecutionContext implements ExecutionContext {
 		populateContext();
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "ConstantConditions"})
 	private void populateContext() {
 		Set<Class<?>> desc = new HashSet<>();
 		try
@@ -35,7 +36,6 @@ public class StlExecutionContext implements ExecutionContext {
 							ClassLoader.getSystemClassLoader()
 									.getResource("./ru/nsu/fit/hmtl/core/lang/").toURI());
 			dfs(file, "ru/nsu/fit/hmtl/core/lang", desc);
-
 		} catch (Exception e) {
 			System.out.println("Fatal error: " + e.getMessage());
 			System.out.println("Stack trace: " + Arrays.toString(Arrays.stream(e.getStackTrace()).toArray()));
@@ -68,8 +68,7 @@ public class StlExecutionContext implements ExecutionContext {
 					.filter(line -> line.endsWith(".class"))
 					.map(x -> getClass(filepath, x))
 					.collect(Collectors.toSet()));
-		} catch (Exception e) {
-
+		} catch (Exception ignored) {
 		}
 	}
 
@@ -115,4 +114,10 @@ public class StlExecutionContext implements ExecutionContext {
 	@Override
 	public void setValue(String name, Expression newValue) {
 	}
+
+	@Override
+	public ExecutionContext getParent() {
+		return parent;
+	}
+
 }
