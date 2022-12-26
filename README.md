@@ -8,19 +8,15 @@ Unlike Clojure, HMTL provides type system and type inference during compiling/in
 
 ### Basic types
 
-There are 6 basic types represented in HMTL:
+There are 5 basic types represented in HMTL:
 
 1. Numeric 
 2. Byte
 3. Character
 4. List
-5. Functor
+5. Function
 
-### Complex types (structures)
-
-HMTL allows creating complex types (C-style named structures) to use them as a basic types expansion.
-
-### Functors
+### Functions
 
 HTML allows passing functors as arguments and works with them as with variable of every other type.
 
@@ -31,7 +27,7 @@ HMTL does not provide any functional polymorphism, it always works with 1-arity 
 
 ### HMTL to Java type
 
-Only first 5 types are related to existing Java types.
+Only first 4 types are related to existing Java types.
 
 Now there is no way to call java methods from HMTL without breaking type system. D:
 
@@ -97,9 +93,9 @@ some specific basic type it can be used to show that type should be equal to som
 
 Some examples:
 
-This function should return Natural as the result
+This function should return Numeric as the result
 ```
-    (fn :Natural [a b] (+ a b))
+    (fn :Numeric [a b] (+ a b))
 ```
 
 This function maps function f to every element of list l
@@ -118,14 +114,7 @@ For example:
 ```
     (fn [a b] (...))
 ```
-
-and 
-
-```
-    (fn [a] (fn [b] (...)))
-```
-
-are the same and their type is: `(a -> (b-> f))`
+has type: `(a -> (b-> f))`
 
 ### Binding to name
 
@@ -152,32 +141,3 @@ Multiple assignment may be applied inside block, rewriting constants for this bl
     ) 
 ```
 Here values `value1`, `value2`, ... are binded to `name1`, `name2`, ... correspondingly.
-
-### Structure
-
-For creating structure following construction is used:
-
-```
-    (str :StrName 
-    [
-        (name1 :Type1),
-        (name2 :Type2)
-    ])
-```
-
-It will register structure with name StrName into basic set and generate methods:
-```
-    (fn getName1 :Type1 [str :StrName] ())
-    (fn getName2 :Type2 [str :StrName] ())
-```
-returning fields of struct and 
-
-```
-    (fn createStrName :StrName [name1 :Type1 name2 :Type2 ...] ())
-```
-
-for instantiating this struct.
-
-IMPORTANT:
-
-ONCE CREATED, STRUCTURE MAY NOT BE CHANGED
