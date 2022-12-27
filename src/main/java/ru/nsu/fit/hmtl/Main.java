@@ -13,44 +13,45 @@ import ru.nsu.fit.hmtl.parsing.HMTLListener;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Scanner;
 
 
 public class Main {
 
 	public static void main(String[] args) throws IOException {
-		String filename;
-		if (args.length >= 1) {
-			filename = args[0];
-		} else {
-			System.out.println("File not provided");
-			return;
-		}
-
-
-		ClojureLexer myLangLexer = new ClojureLexer(
-				CharStreams.fromStream(new FileInputStream(filename)));
-		ClojureParser myLangParser = new ClojureParser(new CommonTokenStream(myLangLexer));
-		var tree = myLangParser.file_();
-
-		ParseTreeWalker walker = new ParseTreeWalker();
-		HMTLListener listener = new HMTLListener();
-		walker.walk(listener, tree);
-
+	    Scanner scanner = new Scanner(System.in);
 
 		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
 		ExecutionContext ectx = StlExecutionContext.getInstance().createSubContext();
 
-		var firstLevelChildren = listener.getTree();
+		while (true) {
 
-		for (var root : firstLevelChildren) {
-			root.inferTypes(tctx);
-			root.updateTypes(tctx);
-			root.generify(tctx);
+			String line = scanner.nextLine();
 
-			var expr = root.generateExpression();
-			var res = expr.eval(ectx);
+			try {
+				ClojureLexer myLangLexer = new ClojureLexer(CharStreams.fromString(line));
+				ClojureParser myLangParser = new ClojureParser(new CommonTokenStream(myLangLexer));
+				var tree = myLangParser.file_();
 
-			System.out.println(res);
+				ParseTreeWalker walker = new ParseTreeWalker();
+				HMTLListener listener = new HMTLListener();
+				walker.walk(listener, tree);
+
+				var firstLevelChildren = listener.getTree();
+
+				for (var root : firstLevelChildren) {
+					root.inferTypes(tctx);
+					root.updateTypes(tctx);
+					root.generify(tctx);
+
+					var expr = root.generateExpression();
+					var res = expr.eval(ectx);
+
+					System.out.println(res);
+				}
+			} catch (Exception e) {
+				System.err.println(e.getMessage());
+			}
 		}
 	}
 }

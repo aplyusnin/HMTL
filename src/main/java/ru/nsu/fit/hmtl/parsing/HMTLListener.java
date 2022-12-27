@@ -164,7 +164,11 @@ public class HMTLListener extends ClojureBaseListener {
 
         if (stack.peek() instanceof VariableNode || ctx.getText().equals("let") || ctx.getText().equals("defn")) return;
         if (stack.peek() instanceof AbstractionNode) {
-            stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
+            if (ctx.getParent().getParent().getParent().getChild(1).equals(ctx.getParent().getParent())) {
+                stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
+            } else {
+                stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
+            }
         } else if (stack.peek() instanceof LetNode && ctx.getParent().getParent().getParent().getChild(1).equals(ctx.getParent().getParent())) {
             stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
         } else {
