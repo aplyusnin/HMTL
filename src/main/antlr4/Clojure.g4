@@ -38,7 +38,7 @@ forms: form* ;
 
 list_: '(' forms ')' ;
 
-vector: '[' forms ']' ;
+vector: '[' form form ']' ;
 
 map_: '{' (form form)* '}' ;
 
@@ -124,12 +124,13 @@ literal
     | number
     | character
     | nil_
-    | BOOLEAN
+    | boolean_
     | keyword
     | symbol
     | param_name
     ;
 
+boolean_: BOOLEAN;
 string_: STRING;
 hex_: HEX;
 bin_: BIN;
