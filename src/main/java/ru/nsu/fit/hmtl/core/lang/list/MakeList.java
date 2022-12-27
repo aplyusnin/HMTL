@@ -22,9 +22,7 @@ public class MakeList extends Function {
 
 	@Override
 	public Expression eval(ExecutionContext ctx) {
-		var res = new ListObject(type);
-		res.getData().add(applied.get(0).eval(ctx));
-		return res;
+		return new ListObject(type);
 	}
 
 	@Override

@@ -30,16 +30,16 @@ public class Print extends Function {
 
 		if (expr instanceof BasicObject) {
 			BasicObject o = (BasicObject) expr;
-			System.out.println(o.getValue());
+			System.out.print(o.getValue());
 		}
 		else if (expr instanceof ListObject) {
 			ListObject l = (ListObject) expr;
-			System.out.println("[");
+			System.out.print("[");
 			for (int i = l.getPos(); i < l.getData().size(); i++) {
 				Expression p = new Print();
 				p = p.apply(l.getData().get(i));
 				p.eval(ctx);
-				if (i + 1 < l.getData().size()) System.out.println(", ");
+				if (i + 1 < l.getData().size()) System.out.print(", ");
 			}
 			System.out.println("]");
 		}

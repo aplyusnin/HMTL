@@ -43,9 +43,9 @@ public class LispUDFExpression implements Expression {
 		if (id + 1 > args.size()) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
 		}
-		if (!argsType.get(id).getName().equals(other.getType().getName())) {
+		/*if (!argsType.get(id).getName().equals(other.getType().getName())) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
-		}
+		}*/
 		return applyImmutable(other);
 	}
 

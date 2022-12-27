@@ -55,3 +55,7 @@ public class Main {
 		}
 	}
 }
+
+// (print (append (append (list) 3) 4))
+
+// (print ((if (= 2 3) (+ 3) (- 4)) 2))
