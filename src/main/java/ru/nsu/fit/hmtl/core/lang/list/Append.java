@@ -29,14 +29,14 @@ public class Append  extends Function {
 	@Override
 	public Expression eval(ExecutionContext ctx) {
 		if (applied.size() < 2) return this;
-		ListObject lo = (ListObject) (applied.get(0)).deepCopy();
+		ListObject lo = (ListObject) (applied.get(0).eval(ctx)).deepCopy();
 		lo.getData().add(applied.get(1));
 		return lo;
 	}
 
 	@Override
 	public List<Type> getArgTypes() {
-		return Collections.emptyList();
+		return List.of(arg1, arg2);
 	}
 
 	@Override
