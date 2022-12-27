@@ -47,7 +47,7 @@ public class Main {
 					var expr = root.generateExpression();
 					var res = expr.eval(ectx);
 
-					System.out.println(res);
+					System.out.println(expr.getType().getName());
 				}
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
