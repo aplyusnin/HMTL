@@ -10,7 +10,6 @@ import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.ListType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
-import java.util.Collections;
 import java.util.List;
 
 public class Append  extends Function {

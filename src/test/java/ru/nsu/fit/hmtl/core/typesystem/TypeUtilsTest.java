@@ -1,6 +1,7 @@
 package ru.nsu.fit.hmtl.core.typesystem;
 
 import org.junit.jupiter.api.Test;
+import ru.nsu.fit.hmtl.core.lang.BasicUtils;
 import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.*;
 
@@ -120,5 +121,21 @@ public class TypeUtilsTest {
 		TypeTable.getInstance().registerFinalType(lt2);
 
 		assertThrows(TypeInferenceException.class, () -> TypeUtils.unify(lt1, lt2));
+	}
+
+
+	@Test
+	public void testPrettyPrint() {
+		Type g = BasicUtils.getGeneric();
+		Type t0 = BasicUtils.getBool();
+		Type t1 = new ApplicationType(new ListType(BasicUtils.getByte()), g);
+		Type t2 = new ApplicationType(new ListType(BasicUtils.getByte()), g);
+		Type t3 = new ApplicationType(new ListType(BasicUtils.getByte()), g);
+
+		Type t4 = new ApplicationType(t2, t3);
+		Type t5 = new ApplicationType(t1, t4);
+		Type t6 = new ApplicationType(t0, t5);
+
+		System.out.println(TypeUtils.generatePrettyName(t6));
 	}
 }
