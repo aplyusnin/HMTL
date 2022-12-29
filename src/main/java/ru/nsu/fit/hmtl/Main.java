@@ -11,14 +11,13 @@ import ru.nsu.fit.hmtl.parsing.ClojureLexer;
 import ru.nsu.fit.hmtl.parsing.ClojureParser;
 import ru.nsu.fit.hmtl.parsing.HMTLListener;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Scanner;
 
 
 public class Main {
 
-	public static void main(String[] args) throws IOException {
+	@SuppressWarnings("InfiniteLoopStatement")
+	public static void main(String[] args) {
 	    Scanner scanner = new Scanner(System.in);
 
 		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
@@ -56,6 +55,6 @@ public class Main {
 	}
 }
 
-// (print (append (append (list) 3) 4))
-
-// (print ((if (= 2 3) (+ 3) (- 4)) 2))
+// (print (let [a (list) b (append a 5) c (concat b b)] (concat c c)))
+// (defn a [b c d] (if b (c 1) (d 1)))
+// (defn a :A [b :B c :C d :D] (if b (c 1) (d 1)))

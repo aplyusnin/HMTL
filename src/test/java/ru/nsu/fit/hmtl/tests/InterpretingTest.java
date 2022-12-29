@@ -409,4 +409,83 @@ public class InterpretingTest {
 		BasicObject result = (BasicObject) res;
 		assertEquals(120, (Integer) result.getValue());
 	}
+
+	@Test
+	public void testGenericFuncRegistration() {
+
+		ConstantNode c0 = new ConstantNode("if");
+		ConstantNode c1 = new ConstantNode("b");
+		ConstantNode c2 = new ConstantNode("c");
+		ConstantNode c3 = new ConstantNode("1");
+		ConstantNode c4 = new ConstantNode("d");
+		ConstantNode c5 = new ConstantNode("2");
+
+		VariableNode fn = new VariableNode("a");
+		VariableNode ab = new VariableNode("b");
+		VariableNode ac = new VariableNode("c");
+		VariableNode ad = new VariableNode("d");
+
+		ApplicationNode app1 = new ApplicationNode();
+		app1.addChild(c2);
+		app1.addChild(c3);
+
+		ApplicationNode app2 = new ApplicationNode();
+		app2.addChild(c4);
+		app2.addChild(c5);
+
+		ApplicationNode app = new ApplicationNode();
+		app.addChild(c0);
+		app.addChild(c1);
+		app.addChild(app1);
+		app.addChild(app2);
+
+		AbstractionNode abs = new AbstractionNode();
+		abs.addChild(fn);
+		abs.addChild(ab);
+		abs.addChild(ac);
+		abs.addChild(ad);
+		abs.addChild(app);
+
+		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
+		ExecutionContext ectx = StlExecutionContext.getInstance().createSubContext();
+		abs.inferTypes(tctx);
+		abs.updateTypes(tctx);
+		abs.generify(tctx);
+
+		var expr = abs.generateExpression();
+		expr.eval(ectx);
+
+		System.out.println(abs.getType().getName());
+
+		{
+			ConstantNode c_0 = new ConstantNode("a");
+			ConstantNode c_1 = new ConstantNode("true");
+			ConstantNode c_2 = new ConstantNode("+");
+			ConstantNode c_3 = new ConstantNode("-");
+			ConstantNode c_4 = new ConstantNode("6");
+
+			ApplicationNode app_0 = new ApplicationNode();
+			app_0.addChild(c_0);
+			app_0.addChild(c_1);
+			app_0.addChild(c_2);
+			app_0.addChild(c_3);
+
+			ApplicationNode app_1 = new ApplicationNode();
+			app_1.addChild(app_0);
+			app_1.addChild(c_4);
+
+			app_1.inferTypes(tctx);
+			app_1.updateTypes(tctx);
+			app_1.generify(tctx);
+
+			var expr_ = app_1.generateExpression();
+			var res_ = expr_.eval(ectx);
+
+			System.out.println(app_1.getType());
+
+		}
+
+
+	}
+
 }

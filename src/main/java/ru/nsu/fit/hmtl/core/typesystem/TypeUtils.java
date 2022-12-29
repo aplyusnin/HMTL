@@ -4,7 +4,9 @@ import ru.nsu.fit.hmtl.core.typesystem.table.TypeTable;
 import ru.nsu.fit.hmtl.core.typesystem.types.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TypeUtils {
 
@@ -98,5 +100,43 @@ public class TypeUtils {
 
 	public static Type generify(Type t) {
 		return TypeTable.getInstance().generify(t);
+	}
+
+
+	public static String generatePrettyName(Type t) {
+		Map<String, String> nameTable = new HashMap<>();
+		StringBuilder nameBuilder = new StringBuilder();
+		generatePrettyNameInternal(t, nameTable, nameBuilder);
+		return nameBuilder.toString();
+	}
+
+	private static void generatePrettyNameInternal(Type t, Map<String, String> nameTable, StringBuilder builder) {
+		if (t instanceof BasicType) {
+			builder.append(t.getName().substring(3));
+			return;
+		}
+		if (t instanceof GenericType) {
+			if (!nameTable.containsKey(t.getName())) {
+				nameTable.put(t.getName(), "T" + nameTable.size());
+			}
+			builder.append(nameTable.get(t.getName()));
+			return;
+		}
+		if (t instanceof ListType) {
+			builder.append("[");
+			generatePrettyNameInternal(((ListType) t).getCore(), nameTable, builder);
+			builder.append("]");
+			return;
+		}
+		if (t instanceof ApplicationType) {
+			ApplicationType at = (ApplicationType) t;
+			builder.append("(");
+			generatePrettyNameInternal(at.getLhs(), nameTable, builder);
+			builder.append(" --> ");
+			generatePrettyNameInternal(at.getRhs(), nameTable, builder);
+			builder.append(")");
+			return;
+		}
+		throw new RuntimeException("Unexpected type");
 	}
 }

@@ -66,7 +66,7 @@ public abstract class Function implements Expression {
 	private Function applyImmutable(Expression other) {
 		Function func = (Function) deepCopy();
 		func.applied.add(other);
-		func.type = ((ApplicationType)type).getRhs();
+		//func.type = ((ApplicationType)type).getRhs();
 		return func;
 	}
 }
