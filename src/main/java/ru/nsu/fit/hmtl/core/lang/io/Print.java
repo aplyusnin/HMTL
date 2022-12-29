@@ -41,10 +41,10 @@ public class Print extends Function {
 				p.eval(ctx);
 				if (i + 1 < l.getData().size()) System.out.print(", ");
 			}
-			System.out.println("]");
+			System.out.print("]");
 		}
 		else{
-			System.out.println("Function " + applied.get(0).toString());
+			System.out.print("Function " + applied.get(0).toString());
 		}
 		return expr;
 	}

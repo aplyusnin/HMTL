@@ -13,6 +13,42 @@ public class HMTLListener extends ClojureBaseListener {
 
     private final Stack<TreeNode> stack = new Stack<>();
 
+    private static class FakeLetNode extends TreeNode {
+
+        @Override
+        public Expression generateExpression() {
+            return null;
+        }
+
+        @Override
+        protected Type inferTypesInternal(TypeContext ctx) {
+            return null;
+        }
+
+        @Override
+        protected void updateTypesInternal(TypeContext ctx) {
+
+        }
+
+        @Override
+        protected void generifyInternal(TypeContext ctx) {
+
+        }
+
+        LetNode getRoot() {
+            LetNode res = new LetNode();
+            LetNode cur = res;
+            for (int i = 0; i < children.size(); ++i) {
+                if (i % 2 == 0 && i != 0 && i != children.size() - 1) {
+                    LetNode newNode = new LetNode();
+                    cur.addChild(newNode);
+                    cur = newNode;
+                }
+                cur.addChild(children.get(i));
+            }
+            return res;
+        }
+    }
 
     private static class RootNode extends TreeNode {
 
@@ -55,14 +91,14 @@ public class HMTLListener extends ClojureBaseListener {
 
         if (ctx.children.size() != 0
                 && ctx.getChild(1).getChild(0).getText().equals("defn")
-                ) {
+        ) {
             var node = new AbstractionNode();
             stack.peek().addChild(node);
             stack.push(node);
         } else if (ctx.children.size() != 0
                 && ctx.getChild(1).getChild(0).getText().equals("let")) {
-            var node = new LetNode();
-            stack.peek().addChild(node);
+            var node = new FakeLetNode();
+
             stack.push(node);
         } else {
             var lexeme = new ApplicationNode();
@@ -73,11 +109,28 @@ public class HMTLListener extends ClojureBaseListener {
 
     @Override
     public void exitList_(ClojureParser.List_Context ctx) {
+        if (ctx.children.size() != 0
+                && ctx.getChild(1).getChild(0).getText().equals("let")) {
+            FakeLetNode fakeLetNode = (FakeLetNode) stack.pop();
+            LetNode node = fakeLetNode.getRoot();
+            stack.peek().addChild(node);
+            stack.push(node);
+        }
         stack.pop();
     }
 
     @Override
     public void enterVector(ClojureParser.VectorContext ctx) {
+
+    }
+
+    @Override
+    public void exitVector(ClojureParser.VectorContext ctx) {
+
+    }
+
+    @Override
+    public void enterMap_(ClojureParser.Map_Context ctx) {
         var node = new VariableNode(
                 ctx.getChild(1).getText(),
                 TypeTable.getInstance().getType(ctx.getChild(2).getText()));
@@ -86,16 +139,8 @@ public class HMTLListener extends ClojureBaseListener {
     }
 
     @Override
-    public void exitVector(ClojureParser.VectorContext ctx) {
-        stack.pop();
-    }
-
-    @Override
-    public void enterMap_(ClojureParser.Map_Context ctx) {
-    }
-
-    @Override
     public void exitMap_(ClojureParser.Map_Context ctx) {
+        stack.pop();
     }
 
     @Override
@@ -169,7 +214,13 @@ public class HMTLListener extends ClojureBaseListener {
             } else {
                 stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
             }
-        } else if (stack.peek() instanceof LetNode && ctx.getParent().getParent().getParent().getChild(1).equals(ctx.getParent().getParent())) {
+        } else if (stack.peek() instanceof FakeLetNode) {
+            for (int i = 1; i < ctx.getParent().getParent().getParent().getChildCount(); ++i) {
+                if (ctx.getParent().getParent().getParent().getChild(i).equals(ctx.getParent().getParent())) {
+                    stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
+                    return;
+                }
+            }
             stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
         } else {
             stack.peek().addChild(new ConstantNode(ctx.getText()));
