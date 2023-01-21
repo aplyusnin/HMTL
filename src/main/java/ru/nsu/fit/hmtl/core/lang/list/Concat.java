@@ -26,14 +26,13 @@ public class Concat extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		ListObject ll = (ListObject) applied.get(0);
-		ListObject rl = (ListObject) applied.get(1);
+	public Expression evalInternal(ExecutionContext ctx) {
+		ListObject ll = (ListObject) applied.get(0).eval(ctx);
+		ListObject rl = (ListObject) applied.get(1).eval(ctx);
 
 		ListObject lo = new ListObject(ll.getType());
 		lo.getData().addAll(ll.getPos(), ll.getData());
 		lo.getData().addAll(rl.getPos(), rl.getData());
-
 		return lo;
 	}
 

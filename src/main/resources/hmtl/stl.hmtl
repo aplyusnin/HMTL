@@ -1,0 +1,4 @@
+(defn gcd a b (if (= 0 b) a (gcd b (mod a b))))
+(defn reduce a b c (if (= 0 (len a)) b (reduce (tail a) (c b (head a)) c)))
+(defn map x y (if (= (len x) 0) (list) (con (wo (y (head x))) (map (tail x) y))))
+(defn fact x (if (= x 0) 1 (* x (fact (- x 1)))))

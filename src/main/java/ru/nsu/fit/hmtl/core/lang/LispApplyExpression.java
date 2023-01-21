@@ -62,7 +62,6 @@ public class LispApplyExpression implements Expression {
 	private LispApplyExpression applyImmutable(Expression other) {
 		LispApplyExpression func = (LispApplyExpression) deepCopy();
 		func.applied.add(other);
-		func.type = ((ApplicationType)type).getRhs();
 		return func;
 	}
 

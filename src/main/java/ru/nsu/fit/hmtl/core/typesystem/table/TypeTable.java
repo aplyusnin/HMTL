@@ -138,8 +138,10 @@ public class TypeTable {
 			Type t1 = getType(t.getName());
 			if (t1 instanceof VaryingType) {
 				equate(t1.getName(), createGenericType().getName());
+				return getType(t1.getName());
+			} else {
+				return generify(t1);
 			}
-			return getType(t1.getName());
 		}
 		return t;
 	}

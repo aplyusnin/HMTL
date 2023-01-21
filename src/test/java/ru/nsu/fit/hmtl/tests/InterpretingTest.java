@@ -250,14 +250,14 @@ public class InterpretingTest {
 
 		AbstractionNode abn = new AbstractionNode();
 		VariableNode fn = new VariableNode("fun", TypeTable.getInstance().createVaryingType());
-		VariableNode arg1 = new VariableNode("ARG_a", TypeTable.getInstance().createVaryingType());
-		VariableNode arg2 = new VariableNode("ARG_b", TypeTable.getInstance().createVaryingType());
+		VariableNode arg1 = new VariableNode("a", TypeTable.getInstance().createVaryingType());
+		VariableNode arg2 = new VariableNode("b", TypeTable.getInstance().createVaryingType());
 
 		ConstantNode c0 = new ConstantNode("/");
 		ConstantNode c1 = new ConstantNode("*");
-		ConstantNode c2 = new ConstantNode("ARG_a");
-		ConstantNode c3 = new ConstantNode("ARG_a");
-		ConstantNode c4 = new ConstantNode("ARG_b");
+		ConstantNode c2 = new ConstantNode("a");
+		ConstantNode c3 = new ConstantNode("a");
+		ConstantNode c4 = new ConstantNode("b");
 
 		ApplicationNode bd1 = new ApplicationNode();
 		bd1.addChild(c1);
@@ -286,11 +286,11 @@ public class InterpretingTest {
 		ConstantNode cp = new ConstantNode("print");
 		ConstantNode c_0 = new ConstantNode("fun");
 		ConstantNode c_1 = new ConstantNode("17");
-		ConstantNode c_2 = new ConstantNode("LT_a");
-		ConstantNode c_3 = new ConstantNode("LT_a");
+		ConstantNode c_2 = new ConstantNode("a");
+		ConstantNode c_3 = new ConstantNode("a");
 		ConstantNode c_4 = new ConstantNode("17");
 
-		VariableNode v_0 = new VariableNode("LT_a");
+		VariableNode v_0 = new VariableNode("a");
 
 		ApplicationNode app1 = new ApplicationNode();
 		app1.addChild(c_0);

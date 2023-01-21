@@ -1,8 +1,8 @@
 package ru.nsu.fit.hmtl.core.lang;
 
+import ru.nsu.fit.hmtl.core.ExecutionContext;
 import ru.nsu.fit.hmtl.core.Expression;
 import ru.nsu.fit.hmtl.core.InvalidApplicationException;
-import ru.nsu.fit.hmtl.core.typesystem.types.ApplicationType;
 import ru.nsu.fit.hmtl.core.typesystem.types.Type;
 
 import java.util.ArrayList;
@@ -33,14 +33,22 @@ public abstract class Function implements Expression {
 		return applyImmutable(other);
 	}
 
+	@Override
+	public Expression eval(ExecutionContext ctx) {
+		if (applied.size() < getArgTypes().size()) return this;
+		return evalInternal(ctx);
+	}
+
+	protected abstract Expression evalInternal(ExecutionContext ctx);
+
 	public abstract List<Type> getArgTypes();
 
 	@Override
 	public Type getType() {
-		Type val = type;
+		/*Type val = type;
 		for (int i = 0; i < applied.size(); i++) {
 			val = ((ApplicationType) val).getRhs();
-		}
+		}*/
 		return type;
 	}
 
@@ -66,7 +74,6 @@ public abstract class Function implements Expression {
 	private Function applyImmutable(Expression other) {
 		Function func = (Function) deepCopy();
 		func.applied.add(other);
-		//func.type = ((ApplicationType)type).getRhs();
 		return func;
 	}
 }

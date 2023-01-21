@@ -18,7 +18,7 @@ public class ReadBool extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
+	public Expression evalInternal(ExecutionContext ctx) {
 		boolean val = sc.nextBoolean();
 		return BasicUtils.createBool(val);
 	}

@@ -25,11 +25,8 @@ public class If extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 3) return this;
-
+	public Expression evalInternal(ExecutionContext ctx) {
 		BasicObject val = (BasicObject) applied.get(0).eval(ctx);
-
 		if ((Boolean) val.getValue()) {
 			return applied.get(1).eval(ctx);
 		} else {
@@ -39,7 +36,7 @@ public class If extends Function {
 
 	@Override
 	public List<Type> getArgTypes() {
-		return List.of(BasicUtils.getBool(), arg, arg, arg);
+		return List.of(BasicUtils.getBool(), arg, arg);
 	}
 
 	@Override

@@ -23,11 +23,8 @@ public class Print extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 1) return this;
-
+	public Expression evalInternal(ExecutionContext ctx) {
 		Expression expr = applied.get(0).eval(ctx);
-
 		if (expr instanceof BasicObject) {
 			BasicObject o = (BasicObject) expr;
 			System.out.print(o.getValue());

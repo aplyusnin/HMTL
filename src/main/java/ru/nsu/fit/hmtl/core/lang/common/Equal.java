@@ -24,8 +24,7 @@ public class Equal extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 2) return this;
+	public Expression evalInternal(ExecutionContext ctx) {
 		Expression llo = applied.get(0).eval(ctx);
 		Expression rlo = applied.get(1).eval(ctx);
 

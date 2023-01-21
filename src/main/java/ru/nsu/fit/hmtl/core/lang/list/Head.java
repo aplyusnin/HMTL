@@ -26,13 +26,14 @@ public class Head extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		ListObject object = ((ListObject) applied.get(0));
-		Expression expr = object.getData().get(object.getPos());
+	public Expression evalInternal(ExecutionContext ctx) {
+		ListObject object = ((ListObject) applied.get(0).eval(ctx));
+		/*Expression expr = object.getData().get(object.getPos());
 		if (expr.getType() instanceof BasicType) {
-			expr = new BasicObject(expr.eval(ctx), expr.getType());
-		}
-		return expr;
+			BasicObject res = (BasicObject) expr.eval(ctx);
+			expr = new BasicObject(res.getValue(), expr.getType());
+		}*/
+		return object.getData().get(object.getPos()).eval(ctx);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class ReadByte extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
+	public Expression evalInternal(ExecutionContext ctx) {
 		byte val = sc.nextByte();
 		return BasicUtils.createByte(val);
 	}

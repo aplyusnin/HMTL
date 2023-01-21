@@ -24,8 +24,8 @@ public class Tail extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		ListObject lo = (ListObject) applied.get(0);
+	public Expression evalInternal(ExecutionContext ctx) {
+		ListObject lo = (ListObject) applied.get(0).eval(ctx);
 		ListObject copy = (ListObject) lo.deepCopy();
 		copy.inc();
 		return copy;

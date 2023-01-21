@@ -26,10 +26,9 @@ public class Append  extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 2) return this;
+	public Expression evalInternal(ExecutionContext ctx) {
 		ListObject lo = (ListObject) (applied.get(0).eval(ctx)).deepCopy();
-		lo.getData().add(applied.get(1));
+		lo.getData().add(applied.get(1).eval(ctx));
 		return lo;
 	}
 
