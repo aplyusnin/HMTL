@@ -31,7 +31,7 @@ public class LispUDFExpression implements Expression {
 		ExecutionContext copy = ctx.createSubContext();
 
 		for (int i = 0; i < args.size(); i++) {
-			copy.setValue(args.get(i), applied.get(i).eval(copy));
+			copy.setValue(args.get(i), applied.get(i).eval(ctx));
 		}
 
 		return body.eval(copy);
@@ -43,9 +43,6 @@ public class LispUDFExpression implements Expression {
 		if (id + 1 > args.size()) {
 			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
 		}
-		/*if (!argsType.get(id).getName().equals(other.getType().getName())) {
-			throw new InvalidApplicationException(toString(), other.toString(), getType(), other.getType());
-		}*/
 		return applyImmutable(other);
 	}
 
@@ -57,16 +54,11 @@ public class LispUDFExpression implements Expression {
 
 	@Override
 	public Type getType() {
-		Type val = type;
-		for (int i = 0; i < applied.size(); i++) {
-			val = ((ApplicationType) val).getRhs();
-		}
-		return val;
+		return type;
 	}
 
 	@Override
 	public Expression deepCopy() {
-		//ExecutionContext subCtx = ctx.createCopy();
 		LispUDFExpression lexpr = new LispUDFExpression(type);
 		lexpr.applied.addAll(applied);
 		lexpr.body = body;

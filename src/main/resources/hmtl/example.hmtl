@@ -1,0 +1,3 @@
+(print (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))))
+(print (map (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))) (+ 7)))
+(print (gcd 28 91))

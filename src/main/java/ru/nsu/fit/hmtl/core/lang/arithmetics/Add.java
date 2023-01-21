@@ -21,8 +21,7 @@ public class Add extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 2) return this;
+	protected Expression evalInternal(ExecutionContext ctx) {
 		BasicObject lhs = (BasicObject) applied.get(0).eval(ctx);
 		BasicObject rhs = (BasicObject) applied.get(1).eval(ctx);
 		return BasicUtils.createNumeric((Integer) lhs.getValue() + (Integer) rhs.getValue());

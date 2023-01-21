@@ -18,7 +18,7 @@ public class ReadNum extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
+	public Expression evalInternal(ExecutionContext ctx) {
 		int val = sc.nextInt();
 		return BasicUtils.createNumeric(val);
 	}

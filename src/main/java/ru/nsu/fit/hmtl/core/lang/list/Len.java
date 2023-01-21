@@ -25,8 +25,8 @@ public class Len extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		ListObject lo = (ListObject) applied.get(0);
+	public Expression evalInternal(ExecutionContext ctx) {
+		ListObject lo = (ListObject) applied.get(0).eval(ctx);
 		return new BasicObject(lo.getData().size() - lo.getPos(), BasicUtils.getInt());
 	}
 

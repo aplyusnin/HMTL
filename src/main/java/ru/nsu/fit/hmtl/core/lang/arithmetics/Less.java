@@ -21,8 +21,7 @@ public class Less extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
-		if (applied.size() < 2) return this;
+	public Expression evalInternal(ExecutionContext ctx) {
 		BasicObject lhs = (BasicObject) applied.get(0).eval(ctx);
 		BasicObject rhs = (BasicObject) applied.get(1).eval(ctx);
 		return BasicUtils.createBool((Integer) lhs.getValue() < (Integer) rhs.getValue());

@@ -18,7 +18,7 @@ public class ReadChar extends Function {
 	}
 
 	@Override
-	public Expression eval(ExecutionContext ctx) {
+	public Expression evalInternal(ExecutionContext ctx) {
 		char val = sc.next(".").charAt(0);
 		return BasicUtils.createChar(val);
 	}

@@ -38,3 +38,6 @@ public class LispDefExpression implements Expression {
 	}
 
 }
+
+
+// (let f (defn x a (+ a 1)) (f 2))
