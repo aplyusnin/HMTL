@@ -15,7 +15,7 @@ import ru.nsu.fit.hmtl.parsing.HMTLListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -23,11 +23,13 @@ import java.util.Scanner;
 public class Main {
 
 	@SuppressWarnings("InfiniteLoopStatement")
-	public static void main(String[] args) {
+	public static void main(String[] args) throws URISyntaxException {
 
 		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
 		ExecutionContext ectx = StlExecutionContext.getInstance().createSubContext();
 		executeSTL(tctx, ectx);
+		executeSource(tctx, ectx, new File(
+				ClassLoader.getSystemClassLoader().getResource("hmtl/example.hmtl").toURI()));
 
 	    Scanner scanner = new Scanner(System.in);
 		while (true) {
@@ -85,8 +87,8 @@ public class Main {
 
 			var expr = root.generateExpression();
 			var res = expr.eval(ectx);
-			System.out.println(TypeUtils.generatePrettyName(expr.getType()));
 			System.out.println();
+			System.out.println(TypeUtils.generatePrettyName(expr.getType()));
 		}
 	}
 }
