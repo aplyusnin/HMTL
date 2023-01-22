@@ -11,6 +11,8 @@ import java.util.Stack;
 
 public class HMTLListener extends ClojureBaseListener {
 
+    private int lambdaCount = 0;
+
     private final Stack<TreeNode> stack = new Stack<>();
 
     private static class FakeLetNode extends TreeNode {
@@ -93,6 +95,13 @@ public class HMTLListener extends ClojureBaseListener {
                 && ctx.getChild(1).getChild(0).getText().equals("defn")
         ) {
             var node = new AbstractionNode();
+            stack.peek().addChild(node);
+            stack.push(node);
+        } else if (ctx.children.size() != 0
+                && ctx.getChild(1).getChild(0).getText().equals("fn")) {
+            String functionName = generateLambdaName();
+            var node = new AbstractionNode();
+            node.addChild(new VariableNode(functionName, TypeTable.getInstance().createVaryingType()));
             stack.peek().addChild(node);
             stack.push(node);
         } else if (ctx.children.size() != 0
@@ -207,7 +216,7 @@ public class HMTLListener extends ClojureBaseListener {
     @Override
     public void enterSymbol(ClojureParser.SymbolContext ctx) {
 
-        if (stack.peek() instanceof VariableNode || ctx.getText().equals("let") || ctx.getText().equals("defn")) return;
+        if (stack.peek() instanceof VariableNode || ctx.getText().equals("let") || ctx.getText().equals("defn") || ctx.getText().equals("fn")) return;
         if (stack.peek() instanceof AbstractionNode) {
             if (ctx.getParent().getParent().getParent().getChild(1).equals(ctx.getParent().getParent())) {
                 stack.peek().addChild(new VariableNode(ctx.getText(), TypeTable.getInstance().createVaryingType()));
@@ -235,5 +244,9 @@ public class HMTLListener extends ClojureBaseListener {
     }
 
 
-
+    private String generateLambdaName() {
+        String name = "__lambda3#" + lambdaCount;
+        lambdaCount++;
+        return name;
+    }
 }
