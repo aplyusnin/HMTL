@@ -2,3 +2,6 @@
 (defn reduce a b c (if (= 0 (len a)) b (reduce (tail a) (c b (head a)) c)))
 (defn map x y (if (= (len x) 0) (list) (con (wo (y (head x))) (map (tail x) y))))
 (defn fact x (if (= x 0) 1 (* x (fact (- x 1)))))
+(defn compose x y (if (= (len x) 0) (list) (con (wo ((head x) y)) (compose (tail x) y))))
+(defn empty x (= (len x) 0))
+(defn reverse x (if (empty x) (list) (con (reverse (tail x)) (wo (head x)))))

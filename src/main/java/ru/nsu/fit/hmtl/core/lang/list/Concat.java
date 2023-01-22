@@ -31,8 +31,12 @@ public class Concat extends Function {
 		ListObject rl = (ListObject) applied.get(1).eval(ctx);
 
 		ListObject lo = new ListObject(ll.getType());
-		lo.getData().addAll(ll.getPos(), ll.getData());
-		lo.getData().addAll(rl.getPos(), rl.getData());
+		for (int i = ll.getPos(); i < ll.getData().size(); i++) {
+			lo.getData().add(ll.getData().get(i));
+		}
+		for (int i = rl.getPos(); i < rl.getData().size(); i++) {
+			lo.getData().add(rl.getData().get(i));
+		}
 		return lo;
 	}
 
