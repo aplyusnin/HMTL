@@ -5,3 +5,4 @@
 (defn compose x y (if (= (len x) 0) (list) (con (wo ((head x) y)) (compose (tail x) y))))
 (defn empty x (= (len x) 0))
 (defn reverse x (if (empty x) (list) (con (reverse (tail x)) (wo (head x)))))
+(defn swapArg a b c (a c b))

@@ -1,7 +1,17 @@
 (print (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))))
 (print (map (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))) (+ 7)))
 (print (gcd 28 91))
-(def lst (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))))
+(defn lst (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))))
 (print (map lst (fn x (+ (* x x) x))))
 (print (let ls (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))) (map ls (* 2))))
 (print (let ls (con (con (wo (+ 29)) (wo ( * 16))) (con (wo (mod 389)) (wo (+ 1236)))) (compose ls 100)))
+(print (let ls (con (con (wo 29) (wo 16)) (con (wo 389) (wo 1236))) (map ls (fn x (+ (* x x) x)))))
+(defn appChain x y (if (empty y) x (appChain ((head y) x) (tail y))))
+(print (let ls (con (con (wo (+ 29)) (wo ( * 16))) (con (wo (swapArg mod 389)) (wo (+ 1236)))) (appChain 1000 ls)))
+
+(defn op (fn x (con x x)))
+(defn oplst (con (con (wo op) (wo op)) (con (wo op) (wo op))))
+
+(print (appChain lst oplst))
+(defn ops (con (con (wo (+ 29)) (wo ( * 16))) (con (wo (swapArg mod 389)) (wo (+ 1236)))))
+(print (map lst (swapArg appChain ops))
