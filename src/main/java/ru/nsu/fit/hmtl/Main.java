@@ -28,8 +28,9 @@ public class Main {
 		TypeContext tctx = StlTypeContext.getInstance().createSubContext();
 		ExecutionContext ectx = StlExecutionContext.getInstance().createSubContext();
 		executeSTL(tctx, ectx);
-		executeSource(tctx, ectx, new File(
-				ClassLoader.getSystemClassLoader().getResource("hmtl/example.hmtl").toURI()));
+//		executeSource(tctx, ectx, new File(
+//				ClassLoader.getSystemClassLoader().getResource("hmtl/example.hmtl").toURI()));
+
 
 	    Scanner scanner = new Scanner(System.in);
 		while (true) {
@@ -88,7 +89,7 @@ public class Main {
 			var expr = root.generateExpression();
 			var res = expr.eval(ectx);
 			System.out.println();
-			System.out.println(TypeUtils.generatePrettyName(expr.getType()));
+			System.out.println(TypeUtils.generatePrettyName(root.getType()));
 		}
 	}
 }
